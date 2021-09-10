@@ -76,7 +76,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "mariadb",
+        "NAME": "pandemic_project",
         "USER": "mariadb",
         "PASSWORD": "mariadb",
         "DEFAULT_CHARSET": "utf-8",
