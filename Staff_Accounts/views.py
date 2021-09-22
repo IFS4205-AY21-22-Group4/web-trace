@@ -81,11 +81,16 @@ def logoutUser(request):
 
 @login_required(login_url="login")
 def home(request):
-
-    return render(request, "accounts/dashboard.html")
-
-
-@login_required(login_url="login")
-def products(request):
-
-    return render(request, "accounts/products.html")
+    group = None
+    if request.user.groups.exists():
+        group = request.user.groups.all()[0].name
+    if group == "Administrators":
+        return render(request, "accounts/admin.html")
+    elif group == "Officials":
+        return render(request, "accounts/official.html")
+    elif group == "Contact Tracers":
+        return render(request, "accounts/tracer.html")
+    elif group == "Token Issuers":
+        return render(request, "accounts/issuer.html")
+    else:
+        logoutUser()
