@@ -1,3 +1,4 @@
+from Staff_Accounts.decorator import admin_only, unauthenticated_user
 from django.contrib.auth.models import Group
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
@@ -9,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@admin_only
 def registerPage(request):
     form = CreateUserForm()
     if request.method == "POST":
@@ -50,6 +52,7 @@ def registerPage(request):
     return render(request, "accounts/register.html", context)
 
 
+@unauthenticated_user
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect("home")
