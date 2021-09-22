@@ -38,7 +38,7 @@ def registerPage(request):
                 messages.add_message(
                     request,
                     messages.INFO,
-                    "Invalid Role! Please choose among Administrators, Official, Contact Tracers & Token Issuers",
+                    "Invalid Role! Please choose among Administrators, Officials, Contact Tracers & Token Issuers",
                 )
                 context = {"form": form}
                 return render(request, "accounts/register.html", context)
