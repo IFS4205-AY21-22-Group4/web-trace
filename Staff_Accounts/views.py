@@ -35,8 +35,9 @@ def registerPage(request):
                 group = Group.objects.get(name="Token Issuers")
                 user.groups.add(group)
             else:
-                messages.info(
+                messages.add_message(
                     request,
+                    messages.INFO,
                     "Invalid Role! Please choose among Administrators, Official, Contact Tracers & Token Issuers",
                 )
                 context = {"form": form}
@@ -46,7 +47,7 @@ def registerPage(request):
             user = form.cleaned_data.get("username")
             messages.success(request, "Account was created for " + user)
 
-            return redirect("login")
+            return redirect("home")
 
     context = {"form": form}
     return render(request, "accounts/register.html", context)

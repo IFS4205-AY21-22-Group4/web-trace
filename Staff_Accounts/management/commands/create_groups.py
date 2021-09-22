@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
 
-GROUPS = ["Administrators", "Officials", "Contact Tracers", "Token Issuer"]
+GROUPS = ["Administrators", "Officials", "Contact Tracers", "Token Issuers"]
 PERMISSIONS = ["Can add user", "Can delete user", "Can view user"]
 
 
