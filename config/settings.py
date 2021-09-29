@@ -76,13 +76,15 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "pandemic_project",
-        "USER": "mariadb",
-        "PASSWORD": "mariadb",
-        "DEFAULT_CHARSET": "utf-8",
-        "HOST": "db",
-        "PORT": 3306,
+        # "ENGINE": "django.db.backends.mysql",
+        # "NAME": "pandemic_project",
+        # "USER": "mariadb",
+        # "PASSWORD": "mariadb",
+        # "DEFAULT_CHARSET": "utf-8",
+        # "HOST": "db",
+        # "PORT": 3306,
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -131,3 +133,8 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "Staff_Accounts.CustomUser"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
+EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
+EMAIL_USE_TLS = True
