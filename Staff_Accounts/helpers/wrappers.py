@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 
-
+# Check if user is unauthenticated
 def unauthenticated_user(view_func):
     def wrapper_func(request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_verified:
@@ -12,6 +12,7 @@ def unauthenticated_user(view_func):
     return wrapper_func
 
 
+# Check if user has logged in with the OTP
 def verified_user(view_func):
     def wrapper_function(request, *args, **kwargs):
         user = request.user
@@ -23,6 +24,7 @@ def verified_user(view_func):
     return wrapper_function
 
 
+# Check whether specified user is allowed to access view
 def allowed_users(allowed_roles=[]):
     def decorator(view_func):
         def wrapper_func(request, *args, **kwargs):
@@ -41,6 +43,7 @@ def allowed_users(allowed_roles=[]):
     return decorator
 
 
+# Check whether user is admin
 def admin_only(view_func):
     def wrapper_function(request, *args, **kwargs):
         group = None
@@ -55,6 +58,7 @@ def admin_only(view_func):
     return wrapper_function
 
 
+# Check whether user is official
 def official_only(view_func):
     def wrapper_function(request, *args, **kwargs):
         group = None
@@ -69,6 +73,7 @@ def official_only(view_func):
     return wrapper_function
 
 
+# Check whether user is tracer
 def tracer_only(view_func):
     def wrapper_function(request, *args, **kwargs):
         group = None
@@ -83,6 +88,7 @@ def tracer_only(view_func):
     return wrapper_function
 
 
+# Check whether user is issuer
 def issuer_only(view_func):
     def wrapper_function(request, *args, **kwargs):
         group = None

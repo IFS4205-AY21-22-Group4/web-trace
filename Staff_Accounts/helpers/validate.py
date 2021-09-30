@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 
-
+# Check role inputted during registration
 def validateRoles(form, role):
     group_error = False
     if role.lower() == "administrators":
@@ -28,7 +28,8 @@ def validateRoles(form, role):
     return group_error
 
 
-def validateEmail(request, activation_key):
+# Send email verification
+def sendVerificationEmail(request, activation_key):
     email_verification_error = False
 
     subject = "Central Login Account Verification"
@@ -46,19 +47,19 @@ def validateEmail(request, activation_key):
     return email_verification_error
 
 
-def validateOTP(request, current_otp, user):
+# Send OTP verification
+def sendOTP(request, current_otp, user):
     email_otp_error = False
 
     subject = "Central Login OTP"
 
     message = (
         """\n
-            This is your current OTP:
+            This is your current OTP: 
                                     """
         + current_otp
     )
 
-    print(user.email)
     try:
         send_mail(subject, message, settings.SERVER_EMAIL, [user.email])
     except:
