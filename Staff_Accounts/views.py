@@ -1,22 +1,21 @@
 from Staff_Accounts.models import CustomUser
-from Staff_Accounts.decorator import (
+from Staff_Accounts.helpers.wrappers import (
     admin_only,
     unauthenticated_user,
     verified_user,
 )
-from django.contrib.auth.models import Group
-from django.http.response import HttpResponse
+
 from django.shortcuts import render, redirect, get_object_or_404, Http404
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .forms import CreateUserForm, CreateUserOTPForm
+from Staff_Accounts.helpers.forms import CreateUserForm, CreateUserOTPForm
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
-from django.conf import settings
-from Staff_Accounts.activate import helpers
-from django.core.mail import EmailMessage
-from Staff_Accounts.validate import validateOTP, validateRoles, validateEmail
+from Staff_Accounts.helpers import crypto
+from Staff_Accounts.helpers.validate import (
+    sendOTP,
+    validateRoles,
+    sendVerificationEmail,
+)
 
 # Create your views here.
 @admin_only
@@ -37,10 +36,10 @@ def registerPage(request):
                 context = {"form": form}
                 return render(request, "accounts/register.html", context)
 
-            activation_key = helpers.generate_activation_key(
+            activation_key = crypto.generate_activation_key(
                 username=request.POST["username"]
             )
-            email_verification_error = validateEmail(request, activation_key)
+            email_verification_error = sendVerificationEmail(request, activation_key)
 
             if email_verification_error:
                 messages.add_message(
@@ -108,8 +107,8 @@ def loginPage(request):
                 else:
                     login(request, user)
 
-                    new_otp = helpers.generate_otp()
-                    otp_verification_error = validateOTP(request, new_otp, user)
+                    new_otp = crypto.generate_otp()
+                    otp_verification_error = sendOTP(request, new_otp, user)
 
                     if otp_verification_error:
                         messages.add_message(
