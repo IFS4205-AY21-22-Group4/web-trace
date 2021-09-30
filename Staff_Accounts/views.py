@@ -1,5 +1,9 @@
 from Staff_Accounts.models import CustomUser
-from Staff_Accounts.decorator import admin_only, unauthenticated_user
+from Staff_Accounts.decorator import (
+    admin_only,
+    unauthenticated_user,
+    verified_user,
+)
 from django.contrib.auth.models import Group
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404, Http404
@@ -16,6 +20,7 @@ from Staff_Accounts.validate import validateOTP, validateRoles, validateEmail
 
 # Create your views here.
 @admin_only
+@verified_user
 def registerPage(request):
     form = CreateUserForm()
     if request.method == "POST":
@@ -80,8 +85,11 @@ def activate_account(request):
 
 @unauthenticated_user
 def loginPage(request):
+
     if request.user.is_authenticated:
-        return redirect("home")
+        if request.user.is_verified:
+            return redirect("home")
+        logoutUser(request)
     else:
         if request.method == "POST":
             username = request.POST.get("username")
@@ -120,17 +128,20 @@ def loginPage(request):
             else:
                 messages.info(request, "Username or Password is incorrect")
 
-        context = {}
-        return render(request, "accounts/login.html", context)
+    context = {}
+    return render(request, "accounts/login.html", context)
 
 
 @login_required(login_url="login")
 def logoutUser(request):
+    user = request.user
+    user.is_verified = False
+    user.save()
     logout(request)
     return redirect("login")
 
 
-@login_required(login_url="login")
+@verified_user
 def home(request):
     group = None
     if request.user.groups.exists():
@@ -156,6 +167,8 @@ def otpVerification(request):
         user = request.user
         otp = request.POST["otp"]
         if otp == user.most_recent_otp:
+            user.is_verified = True
+            user.save()
             return redirect("home")
         else:
             messages.error(request, "Invalid OTP")

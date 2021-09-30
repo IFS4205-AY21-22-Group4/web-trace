@@ -8,3 +8,4 @@ class CustomUser(AbstractUser):
     activation_key = models.CharField(max_length=255, default=1)
     most_recent_otp = models.CharField(max_length=6, blank=True)
     email_validated = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
