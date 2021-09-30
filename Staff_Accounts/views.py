@@ -25,6 +25,7 @@ def registerPage(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
+            # Roles Verification
             role = request.POST["roles"]
             group_error = validateRoles(form, role)
             if group_error:
@@ -36,6 +37,7 @@ def registerPage(request):
                 context = {"form": form}
                 return render(request, "accounts/register.html", context)
 
+            # Email verification
             activation_key = crypto.generate_activation_key(
                 username=request.POST["username"]
             )
@@ -49,12 +51,6 @@ def registerPage(request):
                 )
                 context = {"form": form}
                 return render(request, "accounts/register.html", context)
-            else:
-                messages.add_message(
-                    request,
-                    messages.INFO,
-                    "Account created! Click on the link sent to your email to activate the account",
-                )
 
             user = form.save()
             user.activation_key = activation_key
@@ -62,8 +58,7 @@ def registerPage(request):
             messages.success(request, "Account was created for " + user)
 
             form.save()
-
-            return redirect("register")
+            return redirect("register")  # Sends a new form
 
     context = {"form": form}
     return render(request, "accounts/register.html", context)
@@ -116,7 +111,9 @@ def loginPage(request):
                             messages.INFO,
                             "Unable to send otp verification. Please try again",
                         )
-                        logoutUser(request)
+                        logoutUser(
+                            request
+                        )  # logout user for the time being if OTP cannot be sent
                         context = {}
                         return render(request, "accounts/login.html", context)
 
@@ -159,7 +156,6 @@ def home(request):
 
 @login_required(login_url="login")
 def otpVerification(request):
-
     form = CreateUserOTPForm
     if request.method == "POST":
         form = CreateUserOTPForm(request.POST)
