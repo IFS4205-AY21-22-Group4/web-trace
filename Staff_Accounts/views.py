@@ -6,12 +6,13 @@ from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .forms import CreateUserForm
+from .forms import CreateUserForm, CreateUserOTPForm
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 from Staff_Accounts.activate import helpers
 from django.core.mail import EmailMessage
+from Staff_Accounts.validate import validateOTP, validateRoles, validateEmail
 
 # Create your views here.
 @admin_only
@@ -21,24 +22,8 @@ def registerPage(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             role = request.POST["roles"]
-            if role.lower() == "administrators":
-                user = form.save()
-                user.is_staff = True
-                group = Group.objects.get(name="Administrators")
-                user.groups.add(group)
-            elif role.lower() == "officials":
-                user = form.save()
-                group = Group.objects.get(name="Officials")
-                user.groups.add(group)
-            elif role.lower() == "contact tracers":
-                user = form.save()
-                group = Group.objects.get(name="Contact Tracers")
-                user.groups.add(group)
-            elif role.lower() == "token issuers":
-                user = form.save()
-                group = Group.objects.get(name="Token Issuers")
-                user.groups.add(group)
-            else:
+            group_error = validateRoles(form, role)
+            if group_error:
                 messages.add_message(
                     request,
                     messages.INFO,
@@ -46,32 +31,13 @@ def registerPage(request):
                 )
                 context = {"form": form}
                 return render(request, "accounts/register.html", context)
-            # send email verification now
+
             activation_key = helpers.generate_activation_key(
                 username=request.POST["username"]
             )
+            email_verification_error = validateEmail(request, activation_key)
 
-            subject = "Central Login Account Verification"
-
-            message = """\n
-            Please visit the following link to verify your account \n\n{0}://{1}/activate/account/?key={2}
-                                    """.format(
-                request.scheme, request.get_host(), activation_key
-            )
-
-            error = False
-            try:
-                send_mail(
-                    subject, message, settings.SERVER_EMAIL, [request.POST["email"]]
-                )
-                messages.add_message(
-                    request,
-                    messages.INFO,
-                    "Account created! Click on the link sent to your email to activate the account",
-                )
-
-            except:
-                error = True
+            if email_verification_error:
                 messages.add_message(
                     request,
                     messages.INFO,
@@ -79,9 +45,15 @@ def registerPage(request):
                 )
                 context = {"form": form}
                 return render(request, "accounts/register.html", context)
+            else:
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    "Account created! Click on the link sent to your email to activate the account",
+                )
 
+            user = form.save()
             user.activation_key = activation_key
-            user.is_active = False
             user = form.cleaned_data.get("username")
             messages.success(request, "Account was created for " + user)
 
@@ -100,8 +72,6 @@ def activate_account(request):
         raise Http404()
 
     user = get_object_or_404(CustomUser, activation_key=key, email_validated=False)
-    user.is_active = True
-    user.save()
     user.email_validated = True
     user.save()
 
@@ -119,14 +89,34 @@ def loginPage(request):
 
             user = authenticate(request, username=username, password=password)
 
-            if user.is_active == False:
-                messages.info(
-                    request,
-                    "Please Activate your account using your email before login",
-                )
-            elif user is not None:
-                login(request, user)
-                return redirect("home")
+            if user is not None:
+                if (
+                    user.email_validated == False
+                ):  # User need to activate email address first
+                    messages.info(
+                        request,
+                        "Please Activate your account using your email before login",
+                    )
+                else:
+                    login(request, user)
+
+                    new_otp = helpers.generate_otp()
+                    otp_verification_error = validateOTP(request, new_otp, user)
+
+                    if otp_verification_error:
+                        messages.add_message(
+                            request,
+                            messages.INFO,
+                            "Unable to send otp verification. Please try again",
+                        )
+                        logoutUser(request)
+                        context = {}
+                        return render(request, "accounts/login.html", context)
+
+                    user.most_recent_otp = new_otp
+                    user.save()
+                    return redirect("otp")
+
             else:
                 messages.info(request, "Username or Password is incorrect")
 
@@ -155,3 +145,20 @@ def home(request):
         return render(request, "accounts/issuer.html")
     else:
         return redirect("logout")
+
+
+@login_required(login_url="login")
+def otpVerification(request):
+
+    form = CreateUserOTPForm
+    if request.method == "POST":
+        form = CreateUserOTPForm(request.POST)
+        user = request.user
+        otp = request.POST["otp"]
+        if otp == user.most_recent_otp:
+            return redirect("home")
+        else:
+            messages.error(request, "Invalid OTP")
+
+    context = {"form": form}
+    return render(request, "accounts/otp.html", context)

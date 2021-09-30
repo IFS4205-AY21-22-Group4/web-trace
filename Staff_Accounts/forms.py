@@ -8,3 +8,7 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ["username", "email", "password1", "password2", "roles"]
+
+
+class CreateUserOTPForm(forms.Form):
+    otp = forms.CharField(max_length=6)
