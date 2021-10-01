@@ -4,6 +4,7 @@ from django.db.models.base import Model
 
 # Custom User for Login
 class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
     roles = models.CharField(max_length=20, blank=True)
     activation_key = models.CharField(
         max_length=255, default=1
