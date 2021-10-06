@@ -7,13 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('official', '0009_positivecases_cluster'),
+        ("official", "0009_positivecases_cluster"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='positivecases',
-            name='cluster',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='official.cluster'),
+            model_name="positivecases",
+            name="cluster",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="official.cluster",
+            ),
         ),
     ]

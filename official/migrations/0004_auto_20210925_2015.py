@@ -6,8 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('official', '0003_role_permissions'),
+        ("official", "0003_role_permissions"),
     ]
 
-    operations = [
-    ]
+    operations = []

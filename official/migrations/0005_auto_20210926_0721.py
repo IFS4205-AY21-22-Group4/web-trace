@@ -6,33 +6,39 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('official', '0004_auto_20210925_2015'),
+        ("official", "0004_auto_20210925_2015"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='cluster',
-            name='status',
+            model_name="cluster",
+            name="status",
             field=models.BinaryField(editable=True),
         ),
         migrations.AlterField(
-            model_name='edge',
-            name='vertex1_category',
-            field=models.CharField(choices=[('positive', 'positive case'), ('contact', 'close contact')], max_length=20),
+            model_name="edge",
+            name="vertex1_category",
+            field=models.CharField(
+                choices=[("positive", "positive case"), ("contact", "close contact")],
+                max_length=20,
+            ),
         ),
         migrations.AlterField(
-            model_name='edge',
-            name='vertex2_category',
-            field=models.CharField(choices=[('positive', 'positive case'), ('contact', 'close contact')], max_length=20),
+            model_name="edge",
+            name="vertex2_category",
+            field=models.CharField(
+                choices=[("positive", "positive case"), ("contact", "close contact")],
+                max_length=20,
+            ),
         ),
         migrations.AlterField(
-            model_name='positivecases',
-            name='is_recovered',
+            model_name="positivecases",
+            name="is_recovered",
             field=models.BinaryField(editable=True),
         ),
         migrations.AlterField(
-            model_name='staff',
-            name='active',
+            model_name="staff",
+            name="active",
             field=models.BinaryField(editable=True),
         ),
     ]

@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('official', '0005_auto_20210926_0721'),
+        ("official", "0005_auto_20210926_0721"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='cluster',
-            name='status',
+            model_name="cluster",
+            name="status",
             field=models.BooleanField(),
         ),
         migrations.AlterField(
-            model_name='positivecases',
-            name='is_recovered',
+            model_name="positivecases",
+            name="is_recovered",
             field=models.BooleanField(),
         ),
         migrations.AlterField(
-            model_name='staff',
-            name='active',
+            model_name="staff",
+            name="active",
             field=models.BooleanField(),
         ),
     ]

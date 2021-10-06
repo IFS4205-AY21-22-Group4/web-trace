@@ -6,14 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('official', '0002_remove_role_permissions'),
+        ("official", "0002_remove_role_permissions"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='role',
-            name='permissions',
-            field=models.CharField(default='official', max_length=20),
+            model_name="role",
+            name="permissions",
+            field=models.CharField(default="official", max_length=20),
             preserve_default=False,
         ),
     ]

@@ -7,34 +7,56 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('official', '0006_auto_20210926_0723'),
+        ("official", "0006_auto_20210926_0723"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Gateway',
+            name="Gateway",
             fields=[
-                ('id', models.BigAutoField(primary_key=True, serialize=False)),
+                ("id", models.BigAutoField(primary_key=True, serialize=False)),
             ],
         ),
         migrations.CreateModel(
-            name='Token',
+            name="Token",
             fields=[
-                ('id', models.BigAutoField(primary_key=True, serialize=False)),
-                ('token_serial_number', models.CharField(max_length=10)),
-                ('status', models.BooleanField()),
-                ('hashed_pin', models.BigIntegerField()),
-                ('identity', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='official.identity')),
-                ('staff', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='official.staff')),
+                ("id", models.BigAutoField(primary_key=True, serialize=False)),
+                ("token_serial_number", models.CharField(max_length=10)),
+                ("status", models.BooleanField()),
+                ("hashed_pin", models.BigIntegerField()),
+                (
+                    "identity",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="official.identity",
+                    ),
+                ),
+                (
+                    "staff",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="official.staff"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='GatewayRecord',
+            name="GatewayRecord",
             fields=[
-                ('id', models.BigAutoField(primary_key=True, serialize=False)),
-                ('timestamp', models.DateTimeField()),
-                ('gateway', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='official.gateway')),
-                ('token', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='official.token')),
+                ("id", models.BigAutoField(primary_key=True, serialize=False)),
+                ("timestamp", models.DateTimeField()),
+                (
+                    "gateway",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="official.gateway",
+                    ),
+                ),
+                (
+                    "token",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="official.token"
+                    ),
+                ),
             ],
         ),
     ]

@@ -7,14 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('official', '0007_gateway_gatewayrecord_token'),
+        ("official", "0007_gateway_gatewayrecord_token"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='closecontact',
-            name='cluster',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='official.cluster'),
+            model_name="closecontact",
+            name="cluster",
+            field=models.ForeignKey(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="official.cluster",
+            ),
             preserve_default=False,
         ),
     ]
