@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('token_issuer/', include('issue_token.urls')),
-    path('administrator/', include('administrator.urls')),
-    path('tracer/', include('tracer.urls')),
+    path("admin/", admin.site.urls),
+    path("token_issuer/", include("issue_token.urls")),
+    path("administrator/", include("administrator.urls")),
+    path("tracer/", include("tracer.urls")),
 ]

@@ -9,13 +9,13 @@ from django.db import models
 
 
 class Closecontact(models.Model):
-    identity = models.ForeignKey('Identity', models.DO_NOTHING, blank=True, null=True)
+    identity = models.ForeignKey("Identity", models.DO_NOTHING, blank=True, null=True)
     positivecase_id = models.IntegerField(blank=True, null=True)
     staff_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'CloseContact'
+        db_table = "CloseContact"
 
 
 class Identity(models.Model):
@@ -26,17 +26,17 @@ class Identity(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Identity'
+        db_table = "Identity"
 
 
 class Medicalrecords(models.Model):
-    token = models.ForeignKey('Token', models.DO_NOTHING, blank=True, null=True)
+    token = models.ForeignKey("Token", models.DO_NOTHING, blank=True, null=True)
     identity = models.ForeignKey(Identity, models.DO_NOTHING, blank=True, null=True)
     vaccination_status = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'MedicalRecords'
+        db_table = "MedicalRecords"
 
 
 class Role(models.Model):
@@ -46,7 +46,7 @@ class Role(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Role'
+        db_table = "Role"
 
 
 class Staff(models.Model):
@@ -58,7 +58,7 @@ class Staff(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Staff'
+        db_table = "Staff"
 
 
 class Token(models.Model):
@@ -70,7 +70,7 @@ class Token(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Token'
+        db_table = "Token"
 
 
 class AuthGroup(models.Model):
@@ -78,29 +78,29 @@ class AuthGroup(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'auth_group'
+        db_table = "auth_group"
 
 
 class AuthGroupPermissions(models.Model):
     id = models.BigAutoField(primary_key=True)
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+    permission = models.ForeignKey("AuthPermission", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
+        db_table = "auth_group_permissions"
+        unique_together = (("group", "permission"),)
 
 
 class AuthPermission(models.Model):
     name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    content_type = models.ForeignKey("DjangoContentType", models.DO_NOTHING)
     codename = models.CharField(max_length=100)
 
     class Meta:
         managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
+        db_table = "auth_permission"
+        unique_together = (("content_type", "codename"),)
 
 
 class AuthUser(models.Model):
@@ -117,7 +117,7 @@ class AuthUser(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'auth_user'
+        db_table = "auth_user"
 
 
 class AuthUserGroups(models.Model):
@@ -127,8 +127,8 @@ class AuthUserGroups(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'auth_user_groups'
-        unique_together = (('user', 'group'),)
+        db_table = "auth_user_groups"
+        unique_together = (("user", "group"),)
 
 
 class AuthUserUserPermissions(models.Model):
@@ -138,8 +138,8 @@ class AuthUserUserPermissions(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'auth_user_user_permissions'
-        unique_together = (('user', 'permission'),)
+        db_table = "auth_user_user_permissions"
+        unique_together = (("user", "permission"),)
 
 
 class DjangoAdminLog(models.Model):
@@ -148,12 +148,14 @@ class DjangoAdminLog(models.Model):
     object_repr = models.CharField(max_length=200)
     action_flag = models.PositiveSmallIntegerField()
     change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+    content_type = models.ForeignKey(
+        "DjangoContentType", models.DO_NOTHING, blank=True, null=True
+    )
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'django_admin_log'
+        db_table = "django_admin_log"
 
 
 class DjangoContentType(models.Model):
@@ -162,8 +164,8 @@ class DjangoContentType(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_content_type'
-        unique_together = (('app_label', 'model'),)
+        db_table = "django_content_type"
+        unique_together = (("app_label", "model"),)
 
 
 class DjangoMigrations(models.Model):
@@ -174,7 +176,7 @@ class DjangoMigrations(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_migrations'
+        db_table = "django_migrations"
 
 
 class DjangoSession(models.Model):
@@ -184,4 +186,4 @@ class DjangoSession(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_session'
+        db_table = "django_session"

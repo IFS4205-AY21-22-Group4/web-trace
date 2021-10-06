@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class TracerConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'tracer'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "tracer"
