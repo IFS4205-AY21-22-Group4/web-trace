@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details of cluster {{cluster.id}}</title>
+</head>
+<body>
+<h1>Cluster {{cluster.id}}</h1>
+<p>Cluster name: {{cluster.name}}</p>
+<h3>Number of positive cases: {{cases.count}}</h3>
+<p>List of positive cases:</p>
+<ol>
+{% for case in cases %}
+    <li>
+        <p>
+            Positive case id: {{case.id}}<br/>
+            Identity id: {{case.identity.id}}<br/>
+            Date tested positive: {{case.date_test_positive}}<br/>
+            ID of assigned staff: {{case.staff.id}}<br/>
+        </p>
+    </li>
+{% endfor %}
+</ol>
+<h3>Number of close contacts: {{contacts.count}}</h3>
+<ol>
+{% for contact in contacts %}
+    <li>
+        <p>
+            Close contact id: {{contact.id}}<br/>
+            Identity id: {{contact.identity.id}}<br/>
+            ID of positive case related: {{contact.positivecase.id}}<br/>
+            ID of assigned staff: {{contact.staff.id}}<br/>
+        </p>
+    </li>
+{% endfor %}
+</ol>
+<h3>Number of links: {{links.count}}</h3>
+<ol>
+{% for link in links %}
+    <li>
+        {% if link.vertex1_category == 'positive' %}
+            Positive case ID {{link.vertex1_id}} -
+        {% else %}
+            Close contact ID {{link.vertex1_id}} -
+        {% endif %}
+        {% if link.vertex2_category == 'positive' %}
+            Positive case ID {{link.vertex2_id}}
+        {% else %}
+            Close contact ID {{link.vertex2_id}}
+        {% endif %}
+    </li>
+{% endfor %}
+</ol>
+
+</body>
+</html>
