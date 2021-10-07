@@ -4,23 +4,19 @@ from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 
 # Check role inputted during registration
-def validateRoles(form, role):
+def validateRoles(user, role):
     group_error = False
     if role.lower() == "administrators":
-        user = form.save()  # Should only be saved if groups are valid
         user.is_staff = True
         group = Group.objects.get(name="Administrators")
         user.groups.add(group)
     elif role.lower() == "officials":
-        user = form.save()
         group = Group.objects.get(name="Officials")
         user.groups.add(group)
     elif role.lower() == "contact tracers":
-        user = form.save()
         group = Group.objects.get(name="Contact Tracers")
         user.groups.add(group)
     elif role.lower() == "token issuers":
-        user = form.save()
         group = Group.objects.get(name="Token Issuers")
         user.groups.add(group)
     else:
@@ -48,7 +44,7 @@ def sendVerificationEmail(request, activation_key):
 
 
 # Send OTP verification
-def sendOTP(request, current_otp, user):
+def sendOTP(request, current_otp, email):
     email_otp_error = False
 
     subject = "Central Login OTP"
@@ -61,7 +57,7 @@ def sendOTP(request, current_otp, user):
     )
 
     try:
-        send_mail(subject, message, settings.SERVER_EMAIL, [user.email])
+        send_mail(subject, message, settings.SERVER_EMAIL, [email])
     except:
         email_otp_error = True
     return email_otp_error

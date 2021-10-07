@@ -6,7 +6,14 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
 
 GROUPS = ["Administrators", "Officials", "Contact Tracers", "Token Issuers"]
-PERMISSIONS = ["Can add user", "Can delete user", "Can view user"]
+PERMISSIONS = [
+    "Can add user",
+    "Can delete user",
+    "Can view user",
+    "Can add staff",
+    "Can delete staff",
+    "Can view staff",
+]
 
 
 class Command(BaseCommand):

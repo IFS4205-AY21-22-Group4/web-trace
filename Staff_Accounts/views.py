@@ -1,4 +1,6 @@
-from Staff_Accounts.models import CustomUser
+# from Staff_Accounts.models import CustomUser
+from django import forms
+from Staff_Accounts.models import Staff
 from Staff_Accounts.helpers.wrappers import (
     admin_only,
     unauthenticated_user,
@@ -18,17 +20,20 @@ from Staff_Accounts.helpers.validate import (
 )
 
 # Create your views here.
-@admin_only
-@verified_user
+# @admin_only
+# @verified_user
 def registerPage(request):
     form = CreateUserForm()
+
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
             # Roles Verification
+            user = form.save()
             role = request.POST["roles"]
-            group_error = validateRoles(form, role)
+            group_error = validateRoles(user, role)
             if group_error:
+                user.delete()
                 messages.add_message(
                     request,
                     messages.INFO,
@@ -38,12 +43,11 @@ def registerPage(request):
                 return render(request, "accounts/register.html", context)
 
             # Email verification
-            activation_key = crypto.generate_activation_key(
-                username=request.POST["username"]
-            )
+            activation_key = crypto.generate_activation_key(email=request.POST["email"])
             email_verification_error = sendVerificationEmail(request, activation_key)
 
             if email_verification_error:
+                user.delete()
                 messages.add_message(
                     request,
                     messages.INFO,
@@ -52,12 +56,17 @@ def registerPage(request):
                 context = {"form": form}
                 return render(request, "accounts/register.html", context)
 
-            user = form.save()
-            user.activation_key = activation_key
-            user = form.cleaned_data.get("username")
+            # user = form.save()
+            Staff.objects.create(
+                user=user,
+                roles=role,
+                activation_key=activation_key,
+            )
+            # user.activation_key = activation_key
+            user.save()
+            user = form.cleaned_data.get("email")
             messages.success(request, "Account was created for " + user)
 
-            form.save()
             return redirect("register")  # Sends a new form
 
     context = {"form": form}
@@ -70,7 +79,9 @@ def activate_account(request):
     if not key:
         raise Http404()
 
-    user = get_object_or_404(CustomUser, activation_key=key, email_validated=False)
+    # user = get_object_or_404(CustomUser, activation_key=key, email_validated=False)
+    # models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = get_object_or_404(Staff, activation_key=key, email_validated=False)
     user.email_validated = True
     user.save()
 
@@ -81,15 +92,17 @@ def activate_account(request):
 def loginPage(request):
 
     if request.user.is_authenticated:
-        if request.user.is_verified:
+        user = get_object_or_404(Staff, user=request.user)
+        if user.is_verified:
             return redirect("home")
         logoutUser(request)
     else:
         if request.method == "POST":
-            username = request.POST.get("username")
+            email = request.POST.get("email")
             password = request.POST.get("password")
 
-            user = authenticate(request, username=username, password=password)
+            authenticated_user = authenticate(request, email=email, password=password)
+            user = get_object_or_404(Staff, user=authenticated_user)
 
             if user is not None:
                 if (
@@ -100,10 +113,10 @@ def loginPage(request):
                         "Please Activate your account using your email before login",
                     )
                 else:
-                    login(request, user)
+                    login(request, authenticated_user)
 
                     new_otp = crypto.generate_otp()
-                    otp_verification_error = sendOTP(request, new_otp, user)
+                    otp_verification_error = sendOTP(request, new_otp, email)
 
                     if otp_verification_error:
                         messages.add_message(
@@ -128,9 +141,9 @@ def loginPage(request):
     return render(request, "accounts/login.html", context)
 
 
-@login_required(login_url="login")
+@verified_user
 def logoutUser(request):
-    user = request.user
+    user = get_object_or_404(Staff, user=request.user)
     user.is_verified = False
     user.save()
     logout(request)
@@ -154,12 +167,13 @@ def home(request):
         return redirect("logout")
 
 
+# add unverified
 @login_required(login_url="login")
 def otpVerification(request):
     form = CreateUserOTPForm
     if request.method == "POST":
         form = CreateUserOTPForm(request.POST)
-        user = request.user
+        user = get_object_or_404(Staff, user=request.user)
         otp = request.POST["otp"]
         if otp == user.most_recent_otp:
             user.is_verified = True

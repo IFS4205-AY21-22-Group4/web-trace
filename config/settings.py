@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import sys, os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,27 +74,19 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if sys.argv[1] == "test":
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "pandemic_project",
+        "USER": "mariadb",
+        "PASSWORD": "mariadb",
+        "DEFAULT_CHARSET": "utf-8",
+        "HOST": "127.0.0.1",
+        "PORT": 3306,
+        # "ENGINE": "django.db.backends.sqlite3",
+        # "NAME": BASE_DIR / "db.sqlite3",
     }
-else:
-    DATABASES = {
-        "default": {
-            # "ENGINE": "django.db.backends.mysql",
-            # "NAME": "pandemic_project",
-            # "USER": "mariadb",
-            # "PASSWORD": "mariadb",
-            # "DEFAULT_CHARSET": "utf-8",
-            # "HOST": "db",
-            # "PORT": 3306,
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+}
 
 
 # Password validation
@@ -141,7 +132,7 @@ STATIC_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "Staff_Accounts.CustomUser"
+AUTH_USER_MODEL = "Staff_Accounts.User"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
