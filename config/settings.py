@@ -80,13 +80,11 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "pandemic_project",
         "USER": "mariadb",
-        "TEST": {
-            "MIRROR": "default",
-        },
         "PASSWORD": "mariadb",
         "DEFAULT_CHARSET": "utf-8",
         "HOST": "127.0.0.1",
-        "PORT": 3306,
+        "PORT": "3306",
+        "TEST": {"NAME": "pandemic_project"},
     }
 }
 
