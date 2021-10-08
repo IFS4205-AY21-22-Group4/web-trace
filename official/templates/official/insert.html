@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert a positive case</title>
+</head>
+<body>
+<h1>Enter the details of the positive case to be inserted:</h1>
+<p>This positive case will have positive case ID: {{case_num}}</p>
+<form action="{% url 'official:insert' %}" method="post">
+{% autoescape on %}
+{% csrf_token %}
+<!--{{form.as_p}}-->
+{% for field in form %}
+<div class="fieldWrapper"><p>
+    {{ field.errors }}
+    {{ field.label_tag }} {{ field }}
+    {% if field.help_text %}
+    <p class="help">{{ field.help_text|safe }}</p>
+    {% endif %}
+</p></div>
+{% endfor %}
+<input type="submit" value="Submit">
+{% endautoescape %}
+</form>
+</body>
+</html>
