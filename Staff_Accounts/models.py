@@ -52,8 +52,8 @@ class User(AbstractUser):
 
     class Meta:
         db_table = "user"
-        # managed = False
-        managed = True
+        managed = False
+        # managed = True
 
 
 class Staff(models.Model):
@@ -74,8 +74,8 @@ class Staff(models.Model):
 
     class Meta:
         db_table = "staff"
-        # managed = False
-        managed = True
+        managed = False
+        # managed = True
 
 
 @receiver(signals.post_delete, sender=Staff)
