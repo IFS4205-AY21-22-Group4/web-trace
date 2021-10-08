@@ -2,6 +2,7 @@ from Staff_Accounts.models import Staff
 from Staff_Accounts.helpers.wrappers import (
     admin_only,
     unauthenticated_user,
+    unverified_user,
     verified_user,
 )
 
@@ -165,6 +166,7 @@ def home(request):
 
 # add unverified
 @login_required(login_url="login")
+@unverified_user
 def otpVerification(request):
     form = CreateUserOTPForm
     if request.method == "POST":
