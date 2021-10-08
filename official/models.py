@@ -71,15 +71,12 @@ class PositiveCases(models.Model):
     )
 
     def __str__(self):
-        return (
-            "id: %s, identity_id: %s, date_test_positive: %s, is_recovered: %s, staff_id: %s"
-            % (
-                self.id,
-                self.identity,
-                self.date_test_positive,
-                self.is_recovered,
-                self.staff,
-            )
+        return "id: %s, identity_id: %s, date_test_positive: %s, is_recovered: %s, staff_id: %s" % (
+            self.id,
+            self.identity,
+            self.date_test_positive,
+            self.is_recovered,
+            self.staff,
         )
 
 
@@ -114,16 +111,13 @@ class Edge(models.Model):
     cluster = models.ForeignKey(Cluster, on_delete=models.CASCADE)
 
     def __str__(self):
-        return (
-            "id: %s, vertex1_id: %s, vertex1_category: %s, vertex2_id: %s, vertex_category: %s, cluster_id: %s"
-            % (
-                self.id,
-                self.vertex1_id,
-                self.vertex1_category,
-                self.vertex2_id,
-                self.vertex2_category,
-                self.cluster,
-            )
+        return "id: %s, vertex1_id: %s, vertex1_category: %s, vertex2_id: %s, vertex_category: %s, cluster_id: %s" % (
+            self.id,
+            self.vertex1_id,
+            self.vertex1_category,
+            self.vertex2_id,
+            self.vertex2_category,
+            self.cluster,
         )
 
 
