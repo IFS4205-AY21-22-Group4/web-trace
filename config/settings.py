@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "issuer",
+    "tracer",
 ]
 
 MIDDLEWARE = [
@@ -76,12 +79,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "pandemic_project",
-        "USER": "mariadb",
-        "PASSWORD": "mariadb",
-        "DEFAULT_CHARSET": "utf-8",
-        "HOST": "db",
-        "PORT": 3306,
+        "NAME": "capstone",
+        "USER": "root",
+        "PASSWORD": "Ljw20010812",
+        "HOST": "127.0.0.1",
+        "PORT": "3306",
     }
 }
 

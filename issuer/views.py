@@ -2,7 +2,7 @@ from django.db.models import base
 from django.shortcuts import render
 from django.http import HttpResponse
 from django import forms
-from issue_token import models
+from issuer import models
 import hashlib
 
 # Create your views here.
