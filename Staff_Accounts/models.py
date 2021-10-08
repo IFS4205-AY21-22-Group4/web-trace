@@ -1,22 +1,9 @@
 from django.contrib.auth.models import AbstractUser, Group, User, BaseUserManager
 from django.db import models
-from django.db.models.base import Model
-import datetime
 from django.db.models import signals
 from django.dispatch import receiver
 
-# Custom User for Login
-# class CustomUser(AbstractUser):
-#    email = models.EmailField(unique=True)
-#    roles = models.CharField(max_length=20, blank=True)
-#    activation_key = models.CharField(
-#        max_length=255, default=1
-#    )  # link for email verification
-#    most_recent_otp = models.CharField(
-#        max_length=6, blank=True
-#    )  # value for otp verification
-#    email_validated = models.BooleanField(default=False)  # verify email inputted
-#    is_verified = models.BooleanField(default=False)  # verify otp inputted
+
 class UserManager(BaseUserManager):
 
     use_in_migrations = True
@@ -45,6 +32,8 @@ class UserManager(BaseUserManager):
         user = self.create_user(email, password=password)
         user.is_staff = True
         user.is_superuser = True
+        group = Group.objects.get(name="Administrators")
+        user.groups.add(group)
         user.save()
         return user
 

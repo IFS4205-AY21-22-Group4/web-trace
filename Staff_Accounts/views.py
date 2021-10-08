@@ -1,5 +1,3 @@
-# from Staff_Accounts.models import CustomUser
-from django import forms
 from Staff_Accounts.models import Staff
 from Staff_Accounts.helpers.wrappers import (
     admin_only,
@@ -20,8 +18,8 @@ from Staff_Accounts.helpers.validate import (
 )
 
 # Create your views here.
-# @admin_only
-# @verified_user
+@admin_only
+@verified_user
 def registerPage(request):
     form = CreateUserForm()
 
@@ -33,7 +31,7 @@ def registerPage(request):
             role = request.POST["roles"]
             group_error = validateRoles(user, role)
             if group_error:
-                user.delete()
+                user.delete()  # Delete created user
                 messages.add_message(
                     request,
                     messages.INFO,
@@ -47,7 +45,7 @@ def registerPage(request):
             email_verification_error = sendVerificationEmail(request, activation_key)
 
             if email_verification_error:
-                user.delete()
+                user.delete()  # Delete created user
                 messages.add_message(
                     request,
                     messages.INFO,
@@ -78,9 +76,6 @@ def activate_account(request):
     key = request.GET["key"]
     if not key:
         raise Http404()
-
-    # user = get_object_or_404(CustomUser, activation_key=key, email_validated=False)
-    # models.ForeignKey(settings.AUTH_USER_MODEL)
     user = get_object_or_404(Staff, activation_key=key, email_validated=False)
     user.email_validated = True
     user.save()
@@ -164,7 +159,8 @@ def home(request):
     elif group == "Token Issuers":
         return render(request, "accounts/issuer.html")
     else:
-        return redirect("logout")
+        logout(request)
+        return redirect("login")
 
 
 # add unverified

@@ -5,12 +5,6 @@ from Staff_Accounts.models import Staff
 from django.contrib import admin
 
 # Register your models here.
-# admin.site.register(CustomUser)
-# admin.site.register(User)
-
-# admin.site.register(Staff)
-
-
 class UserAdmin(admin.ModelAdmin):
     pass
 
