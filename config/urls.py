@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from Staff_Accounts import views as staff_views
 
 urlpatterns = [
+    path(
+        "admin/login/", staff_views.loginPage
+    ),  # admin interface cannot be accessed directly
     path("admin/", admin.site.urls),
     path("", include("Staff_Accounts.urls")),
     path("official/", include("official.urls")),
