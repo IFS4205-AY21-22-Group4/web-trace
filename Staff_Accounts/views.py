@@ -77,7 +77,9 @@ def activate_account(request):
     key = request.GET["key"]
     if not key:
         raise Http404()
-    user = get_object_or_404(Staff, activation_key=key, email_validated=False)
+    user = get_object_or_404(
+        Staff, activation_key=key, email_validated=False
+    )  # Cant be used multiple times
     user.email_validated = True
     user.save()
 
@@ -88,8 +90,8 @@ def activate_account(request):
 def loginPage(request):
 
     if request.user.is_authenticated:
-        user = get_object_or_404(Staff, user=request.user)
-        if user.is_verified:
+        new_session_user = Staff.objects.get(user=request.user)
+        if new_session_user.is_verified:
             return redirect("home")
         logoutUser(request)
     else:
@@ -98,11 +100,15 @@ def loginPage(request):
             password = request.POST.get("password")
 
             authenticated_user = authenticate(request, email=email, password=password)
-            user = get_object_or_404(Staff, user=authenticated_user)
+            # user = get_object_or_404(Staff, user=authenticated_user)
+            try:
+                new_session_user = Staff.objects.get(user=authenticated_user)
+            except:
+                new_session_user = None
 
-            if user is not None:
+            if new_session_user is not None:
                 if (
-                    user.email_validated == False
+                    new_session_user.email_validated == False
                 ):  # User need to activate email address first
                     messages.info(
                         request,
@@ -126,8 +132,8 @@ def loginPage(request):
                         context = {}
                         return render(request, "accounts/login.html", context)
 
-                    user.most_recent_otp = new_otp
-                    user.save()
+                    new_session_user.most_recent_otp = new_otp
+                    new_session_user.save()
                     return redirect("otp")
 
             else:
