@@ -100,7 +100,7 @@
         You are finding the information of individual contact
     </div>
 
-    <form  method="post"> {% csrf_token %}
+    <form  method="post"> {% csrf_token %} {% autoescape on %}
         <div align="center">
             <label for="positive">Close contact NRIC number:</label>
             <input type="text" name="nric" size="12" maxlength="9" id="nric_number" minlength="9" required>
@@ -112,9 +112,9 @@
         </div>
 
         <div align="center">
-        <input type="submit" name="submit" value="submit", onclick="return test(form)">
+        <input type="submit" name="submit" value="submit", onclick="return test(form)"> 
         <input type="reset" name="reset" value="reset" >
-        <button type="button" name="gohome" onclick="window.location.href = '/tracer'">Home</button>
+        <button type="button" name="gohome" onclick="window.location.href = '/tracer'">Home</button> {% endautoescape %}
         </div>
     </form>
 </body>

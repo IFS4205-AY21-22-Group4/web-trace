@@ -112,7 +112,9 @@
         <input type="reset" name="reset" value="reset" >
         <button type="button" name="gohome" onclick="window.location.href = '/issuer'">Go Home</button>
         <div>
-
+            {% if message %}
+            <script> alert("Token is inactivated successfully!"); </script>
+            {% endif %}
     </form>
 </body>
 </html>

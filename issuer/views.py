@@ -11,7 +11,7 @@ def index(request):
     return render(request, "issuer/index.html")
 
 
-def issue_token(request):
+def issue_token(request, message = ""):
     if request.method == "POST":
 
         serial = request.POST.get("serial", None)
@@ -41,7 +41,6 @@ def issue_token(request):
             status=1
         )
         if token_instance:
-            # return HttpResponse("The nric holder still has an active token!")
             return render(
                 request,
                 "issuer/error.html",
@@ -62,11 +61,17 @@ def issue_token(request):
                 },
             )
         record = record[0]
+        
+    
+        
+        #get staff
+        #staff = models.Staff.objects.filter(user=current_user)[0]
 
         new_token = models.Token.objects.create(
             token_serial_number=serial,
             identity=models.Identity.objects.get(nric=nric_num),
             staff_id=1,  # temporary all set to 1
+            #staff_id = staff, 
             status=1,  # 1 for active
             hashed_pin=h_pin,
         )
@@ -75,11 +80,13 @@ def issue_token(request):
         record.token = models.Token.objects.filter(token_serial_number=serial)[0]
         # record.token = new_token
         record.save()
+        message = "Token is issued successfully!"
+        return render(request, "issuer/issue_token.html", {"message": message})
+    else: 
+        return render(request, "issuer/issue_token.html")
 
-    return render(request, "issuer/issue_token.html")
 
-
-def inactivate_token(request):
+def inactivate_token(request, message = ""):
     # need to test
     if request.method == "POST":
         nric_num = request.POST.get("nric", None)
@@ -122,8 +129,10 @@ def inactivate_token(request):
             token_instance[0].save()
             record.token = None
             record.save()
-
-    return render(request, "issuer/inactivate_token.html")
+        message = "Token is inactivated successfully!"
+        return render(request, "issuer/inactivate_token.html", {"message": message})
+    else: 
+        return render(request, "issuer/inactivate_token.html")
 
 
 def inact_result(request):

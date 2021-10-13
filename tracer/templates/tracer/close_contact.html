@@ -78,16 +78,16 @@
         You are in the close contacts tracing page
     </div>
 
-    <form  method="post"> {% csrf_token %}
+    <form  method="post"> {% csrf_token %} {% autoescape on %}
         <div align="center">
             <label for="positive">Positive case id:</label>
-            <input type="text" name="pos_id" size="12" maxlength="20" id="pos_id" required>
+            <input type="number" id="positive" name="pos_id" size="12" max="100000000000" id="pos_id" oninput="value=value.replace(/[^\d]/g,'')" required>
         </div>
 
         <div align="center">
         <input type="submit" name="submit" value="submit"> 
         <input type="reset" name="reset" value="reset" >
-        <button type="button" name="gohome" onclick="window.location.href = '/tracer'">Home</button>
+        <button type="button" name="gohome" onclick="window.location.href = '/tracer'">Home</button> {% endautoescape %}
         </div>
     </form>
 </body>

@@ -17,6 +17,8 @@ def close_contact(request):
         close_contact_instances = Closecontact.objects.filter(
             positivecase_id=positive_id
         )
+            
+
         num_contact = close_contact_instances.count()
         if not close_contact_instances:
             return render(
@@ -90,6 +92,7 @@ def find_contact(request):
             )
         else:
             identity = identity_instance[0].id
+            
 
         identity = Identity.objects.filter(nric=nric_num)[0]
         contacts = Closecontact.objects.filter(identity_id=identity.id)

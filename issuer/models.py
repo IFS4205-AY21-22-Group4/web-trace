@@ -9,6 +9,10 @@
 # Create your models here.
 from django.db import models
 
+from django.contrib.auth.models import AbstractUser, Group, User, BaseUserManager
+from django.db.models import signals
+from django.dispatch import receiver
+
 
 class Identity(models.Model):
     nric = models.CharField(unique=True, max_length=9)
@@ -41,17 +45,17 @@ class Role(models.Model):
         db_table = "Role"
 
 
-class Staff(models.Model):
-    username = models.CharField(unique=True, max_length=20)
-    password = models.CharField(max_length=20)
-    active = models.CharField(max_length=5, blank=True, null=True)
+#class Staff(models.Model):
+#    username = models.CharField(unique=True, max_length=20)
+#    password = models.CharField(max_length=20)
+#    active = models.CharField(max_length=5, blank=True, null=True)
     # role_name = models.ForeignKey(Role, models.DO_NOTHING, db_column='role_name')
-    role_name = models.CharField(max_length=20)
-    email = models.CharField(max_length=20)
+#    role_name = models.CharField(max_length=20)
+#    email = models.CharField(max_length=20)
 
-    class Meta:
-        managed = False
-        db_table = "Staff"
+#    class Meta:
+#        managed = False
+#        db_table = "Staff"
 
 
 class Token(models.Model):

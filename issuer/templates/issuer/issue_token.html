@@ -6,7 +6,7 @@
     <script language="javascript">
     <!--
     function test(form) { 
-        if (test_checknric(form) && test_checkpin(form)) {
+        if (test_checknric(form) && test_checkpin(form) ) {
             return true;
         }
         return false;
@@ -25,14 +25,15 @@
     
     function test_checkpin(form){
         if (form.check_pin.value == ""){
-            alert("Please enter the pin again!");
+            alert("Please enter the password again!");
             return false;
         } else if (form.check_pin.value != form.pin.value){
-            alert("Different PINs are entered! Please reset your pin!");
+            alert("Different passwords are entered! Please reset your password!");
             return false;
         }
         return true;
     }   
+
     -->   
     </script>
 
@@ -127,21 +128,23 @@
         </div>
         
         <div align="center">
-            <label for="pin_number">Set PIN Number:</label>
-            <input type="password" name="pin" size="12" maxlength="6" id="pin_number" minlength="6" required>  
+            <label for="pin_number">Set 6-digit Password (mix of characters and numbers):</label>
+            <input type="password" pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).*$" name="pin" size="12" maxlength="6" id="pin_number" minlength="6" title="Please include at least 1 character and 1 number." required>  
         </div>
         
         <div align="center">
-            <label for="checkpin_number">Confirm PIN Number(same as above):</label>
+            <label for="checkpin_number">Confirm Password (same as above):</label>
             <input type="password" name="check_pin" size="12" maxlength="6" id="checkpin_number" minlength="6" required> 
         </div>
-        
+
         <div style="text-align:center">
-        <input type="submit" name="submit" value="submit", onclick="return test(form)" >
+        <input type="submit" name="submit" value="submit", onclick="return test(form)" > 
         <input type="reset" name="reset" value="reset" >
         <button type="button" name="gohome" onclick="window.location.href = '/issuer'">Go Home</button>
         <div>
-
+        {% if message %}
+        <script> alert("Token is issued successfully!"); </script>
+        {% endif %}
     </form>
 </body>
 </html>

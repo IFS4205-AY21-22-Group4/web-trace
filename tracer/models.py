@@ -7,6 +7,11 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+from django.contrib.auth.models import AbstractUser, Group, User, BaseUserManager
+from django.db.models import signals
+from django.dispatch import receiver
+
+
 
 class Closecontact(models.Model):
     identity = models.ForeignKey("Identity", models.DO_NOTHING, blank=True, null=True)
