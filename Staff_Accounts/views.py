@@ -12,7 +12,6 @@ from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from Staff_Accounts.helpers.forms import (
-    CreatePasswordResetForm,
     CreateUserForm,
     CreateUserOTPForm,
 )
@@ -196,28 +195,28 @@ def otp_verification(request):
     return render(request, "accounts/otp.html", context)
 
 
-@unauthenticated_user
-def reset_password(request):
-    if request.user.is_authenticated:
-        user = Staff.objects.get(user=request.user)
-        if user.is_verified:
-            return redirect("home")
-        logoutUser(request)
-    else:
-        form = CreatePasswordResetForm
-        if request.method == "POST":
-            form = CreatePasswordResetForm(request.POST)
-            if form.is_valid:
-                email = request.POST.get("email")
+# @unauthenticated_user
+# def reset_password(request):
+#     if request.user.is_authenticated:
+#         user = Staff.objects.get(user=request.user)
+#         if user.is_verified:
+#             return redirect("home")
+#         logoutUser(request)
+#     else:
+#         form = CreatePasswordResetForm
+#         if request.method == "POST":
+#             form = CreatePasswordResetForm(request.POST)
+#             if form.is_valid:
+#                 email = request.POST.get("email")
 
-                if get_user_model().objects.filter(email=email).exists():
-                    # send email
-                    # generate link
-                    # check email send error
-                    messages.info(request, "Email Address in use")
+#                 if get_user_model().objects.filter(email=email).exists():
+#                     # send email
+#                     # generate link
+#                     # check email send error
+#                     messages.info(request, "Email Address in use")
 
-                else:
-                    messages.info(request, "Email Address not in use")
+#                 else:
+#                     messages.info(request, "Email Address not in use")
 
-    context = {"form": form}
-    return render(request, "accounts/password_reset.html", context)
+#     context = {"form": form}
+#     return render(request, "accounts/password_reset.html", context)
