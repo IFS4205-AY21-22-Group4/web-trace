@@ -38,8 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+<<<<<<< HEAD
     "issuer",
     "tracer",
+=======
+    "official.apps.OfficialConfig",
+    "Staff_Accounts",
+>>>>>>> origin/dev-hemrish
 ]
 
 MIDDLEWARE = [
@@ -79,11 +84,20 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "capstone",
-        "USER": "root",
-        "PASSWORD": "Ljw20010812",
+
+        #"NAME": "capstone",
+        #"USER": "root",
+        #"PASSWORD": "Ljw20010812",
+        #"HOST": "127.0.0.1",
+        #"PORT": "3306",
+
+        "NAME": "pandemic_project",
+        "USER": "mariadb",
+        "PASSWORD": "mariadb",
+        "DEFAULT_CHARSET": "utf-8",
         "HOST": "127.0.0.1",
         "PORT": "3306",
+        "TEST": {"NAME": "pandemic_project"},
     }
 }
 
@@ -130,3 +144,10 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "Staff_Accounts.User"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
+EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
+EMAIL_USE_TLS = True

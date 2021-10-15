@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>List of clusters</title>
+  </head>
+  <body>
+<a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/><br/>
+<a href="{% url 'official:update' %}">Click here to update a new positive case</a>
+{% if cluster_number_dict %}
+<h1>List of clusters:</h1>
+    <ul>
+    {% for cluster, value in cluster_number_dict.items %}
+        <li><p>Cluster {{cluster.id}}</p></li>
+        <p>Cluster name: {{cluster.name}}</p>
+        <p>Number of positive cases: {{value.cases_count}}</p>
+        <p>Number of close contacts: {{value.contacts_count}}</p>
+        <a href="{% url 'official:detail' cluster.id %}">Click here for details of cluster {{cluster.id}}</a>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No clusters are available.</p>
+{% endif %}
+  </body>
+</html>
