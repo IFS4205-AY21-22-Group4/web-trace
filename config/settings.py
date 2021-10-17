@@ -38,13 +38,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-<<<<<<< HEAD
     "issuer",
     "tracer",
-=======
     "official.apps.OfficialConfig",
     "Staff_Accounts",
->>>>>>> origin/dev-hemrish
 ]
 
 MIDDLEWARE = [
