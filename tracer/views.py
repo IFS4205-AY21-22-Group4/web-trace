@@ -30,6 +30,8 @@ def close_contact(request):
             )
 
         contact_list = Closecontact.objects.filter(positivecase_id=positive_id)
+        #user = get_user_model().objects.get(user=request.user)
+        #contact_list = Closecontact.objects.filter(positivecase_id=positive_id).filter(staff_user = user)
         template = loader.get_template("tracer/contacts_info.html")
         contact_list_dict = {}
         for contact in contact_list:
@@ -96,12 +98,14 @@ def find_contact(request):
 
         identity = Identity.objects.filter(nric=nric_num)[0]
         contacts = Closecontact.objects.filter(identity_id=identity.id)
+        #user = get_user_model().objects.get(user=request.user)
+        #contacts = Closecontact.objects.filter(identity_id=identity.id).filter(staff_user= user)
         if not contacts:
             return render(
                 request,
                 "tracer/tracer_error_message.html",
                 {
-                    "message": "The nric holder is not a close contact. You are not allowed to view the information"
+                    "message": "You are not allowed to view the information of this NRIC holder."
                 },
             )
 

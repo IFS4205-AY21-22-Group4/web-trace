@@ -49,6 +49,18 @@ def issue_token(request, message = ""):
                 },
             )
 
+        #check whether the token is on use
+        active_token = models.Token.objects.filter(token_serial_number=serial).filter(
+            status=1
+        )
+        if active_token:
+            return render(
+                request,
+                "issuer/error.html",
+                {
+                    "message": "The token is using by another user. Make sure the serial number of the token is correct."
+                },
+            )
         # check whether the user has medical records
         identity = (models.Identity.objects.get(nric=nric_num).id,)
         record = models.Medicalrecords.objects.filter(identity_id=identity)
@@ -71,7 +83,7 @@ def issue_token(request, message = ""):
             token_serial_number=serial,
             identity=models.Identity.objects.get(nric=nric_num),
             staff_id=1,  # temporary all set to 1
-            #staff_id = staff, 
+            #staff = get_user_model().objects.get(user=request.user)，
             status=1,  # 1 for active
             hashed_pin=h_pin,
         )
@@ -102,7 +114,7 @@ def inactivate_token(request, message = ""):
         else:
             identity = identity_instance[0].id
 
-        identity = (models.Identity.objects.get(nric=nric_num).id,)
+        identity = models.Identity.objects.get(nric=nric_num).id
         record = models.Medicalrecords.objects.filter(identity_id=identity)
         if not record:
             return render(
