@@ -5,12 +5,13 @@ from tracer import models
 from .models import Identity, Closecontact
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_protect
 
 # Create your views here.
 def index(request):
     return render(request, "tracer/tracer.html")
 
-
+@csrf_protect
 def close_contact(request):
     if request.method == "POST":
         positive_id = request.POST.get("pos_id", None)
@@ -53,24 +54,6 @@ def close_contact(request):
         return HttpResponse(template.render(context, request))
     return render(request, "tracer/close_contact.html")
 
-    # check whether the nric is in the database or not
-
-
-#        identity_info={}
-#        info=json.loads(json.dumps(identity_info))
-#        for i in range(0, num_contact):
-#            identity_instance = models.Identity.objects.filter(id=close_contact_instances[i].identity_id).first()
-#            identity_info={'nric': identity_instance.nric,
-#                            'fullname': identity_instance.fullname,
-#                            'phone_num': identity_instance.phone_num,
-#                            'address': identity_instance.address}
-#           info["contact %d" % i] = identity_info
-#        contacts_info = json.dumps(info)
-#        return render(request, 'contacts_info.html', {'info': contacts_info})
-
-#
-
-
 def contacts_info(context, request):
     template = loader.get_template("tracer/contacts_info.html")
     return HttpResponse(template.render(context, request))
@@ -79,7 +62,7 @@ def contacts_info(context, request):
 def tracer_error_message(request, message):
     return render(request, "tracer/tracer_error_message.html", {"message": message})
 
-
+@csrf_protect
 def find_contact(request):
     if request.method == "POST":
         nric_num = request.POST.get("nric", None)
@@ -108,7 +91,7 @@ def find_contact(request):
                     "message": "You are not allowed to view the information of this NRIC holder."
                 },
             )
-
+        
         template = loader.get_template("tracer/individual_info.html")
         contact_list_dict = {}
         positive_id_arr = []

@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django import forms
 from issuer import models
 import hashlib
+from django.views.decorators.csrf import csrf_protect
 
 # Create your views here.
 def index(request):
@@ -11,6 +12,7 @@ def index(request):
     return render(request, "issuer/index.html")
 
 
+@csrf_protect
 def issue_token(request, message = ""):
     if request.method == "POST":
 
@@ -98,6 +100,7 @@ def issue_token(request, message = ""):
         return render(request, "issuer/issue_token.html")
 
 
+@csrf_protect
 def inactivate_token(request, message = ""):
     # need to test
     if request.method == "POST":
