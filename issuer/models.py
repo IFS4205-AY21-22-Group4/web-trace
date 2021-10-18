@@ -59,7 +59,7 @@ class Role(models.Model):
 
 
 class Token(models.Model):
-    token_serial_number = models.CharField(max_length=10)
+    token_serial_number = models.CharField(max_length=14)
     identity = models.ForeignKey(Identity, models.DO_NOTHING)
     staff_id = models.IntegerField()
     status = models.IntegerField()
