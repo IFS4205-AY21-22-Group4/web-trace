@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, Group, User, BaseUserManage
 from django.db import models
 from django.db.models import signals
 from django.dispatch import receiver
+from django.contrib.auth import user_logged_in, user_logged_out
 
 
 class UserManager(BaseUserManager):
@@ -81,6 +82,7 @@ class Staff(models.Model):
         managed = True
 
 
+# signal to delete user from Staff table using User relation
 @receiver(signals.post_delete, sender=Staff)
 def delete_user(sender, instance=None, **kwargs):
     try:
@@ -90,3 +92,29 @@ def delete_user(sender, instance=None, **kwargs):
     else:
         instance.user.delete()
     signals.post_delete.connect(delete_user, sender=Staff)
+
+
+class LoggedInUser(models.Model):
+    user = models.OneToOneField(
+        User, related_name="logged_in_user", on_delete=models.CASCADE
+    )
+    # Session keys are 32 characters long
+    session_key = models.CharField(max_length=32, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        db_table = "login_staff"
+        # managed = False
+        managed = True
+
+
+@receiver(user_logged_in)
+def on_user_logged_in(sender, request, **kwargs):
+    LoggedInUser.objects.get_or_create(user=kwargs.get("user"))
+
+
+@receiver(user_logged_out)
+def on_user_logged_out(sender, **kwargs):
+    LoggedInUser.objects.filter(user=kwargs.get("user")).delete()
