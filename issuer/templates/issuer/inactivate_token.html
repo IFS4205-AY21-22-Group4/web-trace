@@ -99,7 +99,7 @@
     <div align="center" style="font-size:30px">
         You are on the token inactivating page.    
     </div>
-    <form  method="post" > {% csrf_token %}
+    <form  method="post" > {% csrf_token %} {% autoescape on %}
         <div align="center">
             <label for="nric_number">Nric Number:</label>
             <input type="text" name="nric" size="12" maxlength="9" id="nric_number" minlength="9" required>
@@ -110,7 +110,7 @@
         <div style="text-align:center">
         <input type="submit" name="submit" value="submit", onclick="return test(form)" >
         <input type="reset" name="reset" value="reset" >
-        <button type="button" name="gohome" onclick="window.location.href = '/issuer'">Go Home</button>
+        <button type="button" name="gohome" onclick="window.location.href = '/issuer'">Go Home</button> {% endautoescape %}
         <div>
             {% if message %}
             <script> alert("Token is inactivated successfully!"); </script>
