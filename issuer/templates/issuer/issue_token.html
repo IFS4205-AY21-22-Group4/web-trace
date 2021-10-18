@@ -6,11 +6,27 @@
     <script language="javascript">
     <!--
     function test(form) { 
-        if (test_checknric(form) && test_checkpin(form) ) {
+        if (test_token(form) && test_checknric(form) && test_checkpin(form)) {
             return true;
         }
         return false;
     }
+    
+    function test_token(form){
+        if (form.serial.value.slice(0, 8) != "IFS4205-") {
+            alert("Invalid token name!");
+            return false;
+        } else {
+            var re = /[0-9A-Fa-f]{6}/g;
+            str = form.serial.value.slice(8);
+            if (!(re.test(str))) {
+                alert("Invalid token name!");
+                return false; 
+            } else {
+                return true;
+            }
+        }
+    } 
     
     function test_checknric(form){
         if (form.check_nric.value == ""){
@@ -111,9 +127,9 @@
     <div align="center" style="font-size:30px">
         You are on the token issuing page.
     </div>
-    <form  method="post"> {% csrf_token %}
+    <form  method="post"> {% csrf_token %} {% autoescape on %}
         <div align="center">
-            <label for="serial_number">Token Serial Number:</label>
+            <label for="serial_number">Token Name:</label>
             <input type="text" name="serial" size="12" maxlength="20" id="serial_number" required>
         </div>
         
@@ -140,7 +156,7 @@
         <div style="text-align:center">
         <input type="submit" name="submit" value="submit", onclick="return test(form)" > 
         <input type="reset" name="reset" value="reset" >
-        <button type="button" name="gohome" onclick="window.location.href = '/issuer'">Go Home</button>
+        <button type="button" name="gohome" onclick="window.location.href = '/issuer'">Go Home</button> {% endautoescape %}
         <div>
         {% if message %}
         <script> alert("Token is issued successfully!"); </script>
