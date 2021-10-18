@@ -50,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "Staff_Accounts.middleware.OneSessionPerUserMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -139,3 +140,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
 EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
 EMAIL_USE_TLS = True
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 5 * 60  # In terms of seconds
+SESSION_SAVE_EVERY_REQUEST = True  # Restart timer after an activity
