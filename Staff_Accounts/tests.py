@@ -37,7 +37,7 @@ class LogInTest(TestCase):
         # send login data
         response = self.client.post("", self.credentials, follow=True)
 
-        self.assertRaises(KeyError, response.context.__getitem__, "user")
+        self.assertFalse(response.context["user"].is_authenticated)
 
     def test_Login_Valid_Username_Valid_Password(self):
         self.credentials = {
@@ -59,4 +59,4 @@ class LogInTest(TestCase):
         # send login data
         response = self.client.post("", self.credentials, follow=True)
 
-        self.assertRaises(KeyError, response.context.__getitem__, "user")
+        self.assertFalse(response.context["user"].is_authenticated)
