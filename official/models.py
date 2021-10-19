@@ -17,6 +17,9 @@ class Identity(models.Model):
             self.phone_num,
         )
 
+    class Meta:
+        managed = True
+
 
 class Role(models.Model):
     name = models.CharField(max_length=20)
@@ -29,6 +32,9 @@ class Role(models.Model):
             self.default,
             self.permissions,
         )
+
+    class Meta:
+        managed = True
 
 
 class Staff(models.Model):
@@ -46,6 +52,9 @@ class Staff(models.Model):
             self.role.name,
         )
 
+    class Meta:
+        managed = True
+
 
 class Cluster(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -58,6 +67,9 @@ class Cluster(models.Model):
             self.name,
             "active" if self.status else "inactive",
         )
+
+    class Meta:
+        managed = True
 
 
 class PositiveCases(models.Model):
@@ -79,6 +91,9 @@ class PositiveCases(models.Model):
             self.staff,
         )
 
+    class Meta:
+        managed = True
+
 
 class CloseContact(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -94,6 +109,9 @@ class CloseContact(models.Model):
             self.positivecase,
             self.staff,
         )
+
+    class Meta:
+        managed = True
 
 
 class Edge(models.Model):
@@ -120,6 +138,9 @@ class Edge(models.Model):
             self.cluster,
         )
 
+    class Meta:
+        managed = True
+
 
 class Token(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -129,9 +150,15 @@ class Token(models.Model):
     status = models.BooleanField()
     hashed_pin = models.BigIntegerField()
 
+    class Meta:
+        managed = True
+
 
 class Gateway(models.Model):
     id = models.BigAutoField(primary_key=True)
+
+    class Meta:
+        managed = True
 
 
 class GatewayRecord(models.Model):
@@ -139,3 +166,6 @@ class GatewayRecord(models.Model):
     token = models.ForeignKey(Token, on_delete=models.CASCADE)
     gateway = models.ForeignKey(Gateway, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
+
+    class Meta:
+        managed = True
