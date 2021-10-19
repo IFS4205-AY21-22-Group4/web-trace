@@ -71,6 +71,7 @@ class Staff(models.Model):
     )  # value for otp verification
     email_validated = models.BooleanField(default=False)  # verify email inputted
     is_verified = models.BooleanField(default=False)  # verify otp inputted
+    number_of_attempts = models.IntegerField(default=0)  # count number of attempts
 
     def __str__(self):
 
