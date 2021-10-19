@@ -187,7 +187,7 @@ def otp_verification(request):
         if form.is_valid:
             user = get_object_or_404(Staff, user=request.user)
             otp = request.POST["otp"]
-            if user.number_of_attempts >= 3:  # 4 attempts in total
+            if user.number_of_attempts >= 2:  # 3 attempts in total
                 user.email_validated = False
                 activation_key = crypto.generate_activation_key(
                     email=request.user.email

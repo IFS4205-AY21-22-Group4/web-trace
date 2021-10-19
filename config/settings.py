@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "official.apps.OfficialConfig",
     "Staff_Accounts",
+    "axes",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "Staff_Accounts.middleware.OneSessionPerUserMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -141,6 +143,9 @@ EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
 EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
 EMAIL_USE_TLS = True
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 5 * 60  # In terms of seconds
-SESSION_SAVE_EVERY_REQUEST = True  # Restart timer after an activity
+SILENCED_SYSTEM_CHECKS = ["axes.W003"]
+AXES_ENABLED = True
+AXES_LOGIN_FAILURE_LIMIT = 3
+AXES_COOLOFF_TIME = 24
+ATOMIC_REQUESTS = False
+AXES_LOCK_OUT_BY_USER_OR_IP = True

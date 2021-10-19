@@ -5,3 +5,4 @@ mysqlclient==2.0.3
 pytz==2021.1
 sqlparse==0.4.1
 pymysql==1.0.2
+django-axes==5.26.0
