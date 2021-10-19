@@ -2,10 +2,13 @@ from django.db.models import base
 from django.shortcuts import render, get_object_or_404
 from django import forms
 from tracer import models
-from .models import Identity, Closecontact
+from .models import Identity, CloseContact
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import authenticate, get_user_model, login, logout
+from Staff_Accounts.models import Staff, User, UserManager
+from issuer.models import Token, MedicalRecord, Identity
 
 # Create your views here.
 def index(request):
@@ -15,7 +18,7 @@ def index(request):
 def close_contact(request):
     if request.method == "POST":
         positive_id = request.POST.get("pos_id", None)
-        close_contact_instances = Closecontact.objects.filter(
+        close_contact_instances = CloseContact.objects.filter(
             positivecase_id=positive_id
         )
             
@@ -30,9 +33,11 @@ def close_contact(request):
                 },
             )
 
-        contact_list = Closecontact.objects.filter(positivecase_id=positive_id)
+        #contact_list = CloseContact.objects.filter(positivecase_id=positive_id)
         #user = get_user_model().objects.get(user=request.user)
-        #contact_list = Closecontact.objects.filter(positivecase_id=positive_id).filter(staff_user = user)
+        user = request.user.id
+        #user = 101
+        contact_list = CloseContact.objects.filter(positivecase_id=positive_id).filter(staff_id = user)
         template = loader.get_template("tracer/contacts_info.html")
         contact_list_dict = {}
         for contact in contact_list:
@@ -80,15 +85,17 @@ def find_contact(request):
             
 
         identity = Identity.objects.filter(nric=nric_num)[0]
-        contacts = Closecontact.objects.filter(identity_id=identity.id)
+        #contacts = CloseContact.objects.filter(identity_id=identity.id)
         #user = get_user_model().objects.get(user=request.user)
-        #contacts = Closecontact.objects.filter(identity_id=identity.id).filter(staff_user= user)
+        user = request.user.id
+        #user = 101
+        contacts = CloseContact.objects.filter(identity_id=identity.id).filter(staff_id= user)
         if not contacts:
             return render(
                 request,
                 "tracer/tracer_error_message.html",
                 {
-                    "message": "You are not allowed to view the information of this NRIC holder."
+                    "message": "You are not allowed to view the information of this NRIC holder or the holder is not a close contact."
                 },
             )
         

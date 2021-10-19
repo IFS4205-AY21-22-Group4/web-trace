@@ -5,6 +5,9 @@ from django import forms
 from issuer import models
 import hashlib
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import authenticate, get_user_model, login, logout
+from Staff_Accounts.models import Staff, User, UserManager
+
 
 # Create your views here.
 def index(request):
@@ -39,7 +42,7 @@ def issue_token(request, message = ""):
             identity = identity_instance[0].id
 
         # check whether the user have active token
-        token_instance = models.Token.objects.filter(identity_id=identity).filter(
+        token_instance = models.Token.objects.filter(owner_id=identity).filter(
             status=1
         )
         if token_instance:
@@ -52,7 +55,7 @@ def issue_token(request, message = ""):
             )
 
         #check whether the token is on use
-        active_token = models.Token.objects.filter(token_serial_number=serial).filter(
+        active_token = models.Token.objects.filter(token_uuid=serial).filter(
             status=1
         )
         if active_token:
@@ -65,7 +68,7 @@ def issue_token(request, message = ""):
             )
         # check whether the user has medical records
         identity = (models.Identity.objects.get(nric=nric_num).id,)
-        record = models.Medicalrecords.objects.filter(identity_id=identity)
+        record = models.MedicalRecord.objects.filter(identity_id=identity)
         if not record:
             return render(
                 request,
@@ -82,16 +85,19 @@ def issue_token(request, message = ""):
         #staff = models.Staff.objects.filter(user=current_user)[0]
 
         new_token = models.Token.objects.create(
-            token_serial_number=serial,
-            identity=models.Identity.objects.get(nric=nric_num),
-            staff_id=1,  # temporary all set to 1
-            #staff = get_user_model().objects.get(user=request.user)，
+            token_uuid=serial,
+            #identity=models.Identity.objects.get(nric=nric_num),
+            owner=models.Identity.objects.get(nric=nric_num),
+            #staff_id=1,  # temporary all set to 1
+            #staff = get_user_model().objects.get(user=request.user).id,
+            issuer = request.user.id,
             status=1,  # 1 for active
             hashed_pin=h_pin,
         )
 
         # update medical records table
-        record.token = models.Token.objects.filter(token_serial_number=serial)[0]
+        #record.token = models.Token.objects.filter(token_serial_number=serial)[0]
+        record.token = models.Token.objects.filter(token_uuid=serial)[0]
         # record.token = new_token
         record.save()
         message = "Token is issued successfully!"
@@ -118,7 +124,7 @@ def inactivate_token(request, message = ""):
             identity = identity_instance[0].id
 
         identity = models.Identity.objects.get(nric=nric_num).id
-        record = models.Medicalrecords.objects.filter(identity_id=identity)
+        record = models.MedicalRecord.objects.filter(identity_id=identity)
         if not record:
             return render(
                 request,
@@ -129,7 +135,7 @@ def inactivate_token(request, message = ""):
             )
         record = record[0]
 
-        token_instance = models.Token.objects.filter(identity_id=identity).filter(
+        token_instance = models.Token.objects.filter(owner_id=identity).filter(
             status=1
         )
         if not token_instance:
