@@ -82,7 +82,18 @@ def issue_token(request, message = ""):
     
         
         #get staff
-        #staff = models.Staff.objects.filter(user=current_user)[0]
+        user = request.user.id
+        staff_instance = models.Staff.objects.filter(user_id =  user)
+        if not staff_instance:
+            return render(
+                request,
+                "issuer/error.html",
+                {
+                    "message": "The staff is not recorded."
+                },
+            )
+        else:
+            staff = identity_instance[0]
 
         new_token = models.Token.objects.create(
             token_uuid=serial,
@@ -90,7 +101,7 @@ def issue_token(request, message = ""):
             owner=models.Identity.objects.get(nric=nric_num),
             #staff_id=1,  # temporary all set to 1
             #staff = get_user_model().objects.get(user=request.user).id,
-            issuer = request.user.id,
+            issuer = staff,
             status=1,  # 1 for active
             hashed_pin=h_pin,
         )
@@ -156,9 +167,9 @@ def inactivate_token(request, message = ""):
         return render(request, "issuer/inactivate_token.html")
 
 
-def inact_result(request):
-    message = "You have inactivated a token successfully."
-    return render(request, "issuer/inact_result.html", {"message": message})
+#def inact_result(request):
+#    message = "You have inactivated a token successfully."
+#    return render(request, "issuer/inact_result.html", {"message": message})
 
 
 def error_message(request, message):

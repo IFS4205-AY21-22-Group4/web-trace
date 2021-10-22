@@ -89,7 +89,7 @@ def find_contact(request):
         #user = get_user_model().objects.get(user=request.user)
         user = request.user.id
         #user = 101
-        contacts = CloseContact.objects.filter(identity_id=identity.id).filter(staff_id= user)
+        contacts = CloseContact.objects.filter(identity_id=identity.id).filter(staff_id=user)
         if not contacts:
             return render(
                 request,
