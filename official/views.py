@@ -16,6 +16,7 @@ from .models import (
     Gateway,
     GatewayRecord,
 )
+
 # from Staff_Accounts.models import Staff
 from .forms import InsertForm, UpdateForm, ConfirmForm
 from django.contrib import messages
@@ -43,6 +44,7 @@ def index(request):
         "cluster_number_dict": cluster_number_dict,
     }
     return HttpResponse(template.render(context, request))
+
 
 # @verified_user
 def detail(request, cluster_id):
@@ -76,7 +78,9 @@ def insert(request):
                 try:
                     identity = Identity.objects.get(nric=nric)
                 except:
-                    return HttpResponseRedirect(reverse("official:error", args=("NRIC does not exist.",)))
+                    return HttpResponseRedirect(
+                        reverse("official:error", args=("NRIC does not exist.",))
+                    )
                 date_test_positive = form.cleaned_data["date_test_positive"]
                 is_recovered = form.cleaned_data["is_recovered"]
                 staff = form.cleaned_data["staff"]
@@ -122,9 +126,7 @@ def update(request):
         form = UpdateForm(request.POST)
         if form.is_valid():
             nric = form.cleaned_data["nric"]
-            return HttpResponseRedirect(
-                reverse("official:confirm", args=(nric,))
-            )
+            return HttpResponseRedirect(reverse("official:confirm", args=(nric,)))
     else:
         form = UpdateForm()
     context = {
@@ -144,9 +146,12 @@ def confirm(request, nric):
             is_recovered_change = form.cleaned_data["is_recovered_change"]
             staff_change = form.cleaned_data["staff_change"]
             cluster_change = form.cleaned_data["cluster_change"]
-            change_dict = {"date_test_positive_change" : date_test_positive_change,
-                           "is_recovered_change" : is_recovered_change, "staff_change" : staff_change,
-                           "cluster_change" : cluster_change}
+            change_dict = {
+                "date_test_positive_change": date_test_positive_change,
+                "is_recovered_change": is_recovered_change,
+                "staff_change": staff_change,
+                "cluster_change": cluster_change,
+            }
             return HttpResponseRedirect(
                 reverse("official:edit", args=(positivecase_id, change_dict))
             )
@@ -200,6 +205,7 @@ def edit(request, positivecase_id, change_dict):
     }
     return HttpResponse(template.render(context, request))
 
+
 # @verified_user
 def assign(request):
     return HttpResponse(
@@ -212,7 +218,8 @@ def success(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+
 def error(request, message):
     template = loader.get_template("official/error.html")
-    context = {'message': message}
+    context = {"message": message}
     return HttpResponse(template.render(context, request))
