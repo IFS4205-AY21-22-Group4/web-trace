@@ -12,7 +12,6 @@ class SiteOwner(models.Model):
 
     class Meta:
         db_table = "siteowner"
-        managed = False
 
 
 class Identity(models.Model):
@@ -23,7 +22,6 @@ class Identity(models.Model):
 
     class Meta:
         db_table = "identity"
-        managed = False
 
 
 class Token(models.Model):
@@ -35,7 +33,6 @@ class Token(models.Model):
 
     class Meta:
         db_table = "token"
-        managed = False
 
 
 class MedicalRecord(models.Model):
@@ -45,7 +42,6 @@ class MedicalRecord(models.Model):
 
     class Meta:
         db_table = "medicalrecords"
-        managed = False
 
 
 class Gateway(models.Model):
@@ -58,7 +54,6 @@ class Gateway(models.Model):
 
     class Meta:
         db_table = "gateway"
-        managed = False
 
 
 class GatewayRecord(models.Model):
@@ -68,7 +63,6 @@ class GatewayRecord(models.Model):
 
     class Meta:
         db_table = "gatewayrecord"
-        managed = False
 
 
 class LoggedInUser(models.Model):
@@ -83,7 +77,6 @@ class LoggedInUser(models.Model):
 
     class Meta:
         db_table = "login_staff"
-        managed = False
 
 
 class Cluster(models.Model):
