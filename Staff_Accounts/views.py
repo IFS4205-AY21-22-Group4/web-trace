@@ -12,7 +12,6 @@ from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from Staff_Accounts.helpers.forms import (
-    CreatePasswordResetForm,
     CreateUserForm,
     CreateUserOTPForm,
 )
@@ -48,10 +47,13 @@ def registerPage(request):
                 return render(request, "accounts/register.html", context)
 
             # Email verification
+            email = request.POST["email"]
             activation_key = crypto.generate_activation_key(
                 email=request.POST["email"]
             )  # form.cleaned_data.get("email")
-            email_verification_error = sendVerificationEmail(request, activation_key)
+            email_verification_error = sendVerificationEmail(
+                request, activation_key, email
+            )
 
             if email_verification_error:
                 user.delete()  # Delete created user
@@ -185,39 +187,32 @@ def otp_verification(request):
         if form.is_valid:
             user = get_object_or_404(Staff, user=request.user)
             otp = request.POST["otp"]
-            if otp == user.most_recent_otp:
+            if user.number_of_attempts >= 2:  # 3 attempts in total
+                user.email_validated = False
+                activation_key = crypto.generate_activation_key(
+                    email=request.user.email
+                )
+                email_verification_error = sendVerificationEmail(
+                    request, activation_key, request.user.email
+                )
+                user.activation_key = activation_key
+                user.number_of_attempts = 0
+                user.save()
+                logoutUser(request)
+                messages.error(
+                    request,
+                    "Your account has been blocked. Please re-activate your account using your email before proceeding! If you didn't receive any mails, please reach out to an administrator",
+                )
+                return redirect("login")
+            elif otp == user.most_recent_otp:
                 user.is_verified = True
+                user.number_of_attempts = 0
                 user.save()
                 return redirect("home")
             else:
+                user.number_of_attempts = user.number_of_attempts + 1
+                user.save()
                 messages.error(request, "Invalid OTP")
 
     context = {"form": form}
     return render(request, "accounts/otp.html", context)
-
-
-@unauthenticated_user
-def reset_password(request):
-    if request.user.is_authenticated:
-        user = Staff.objects.get(user=request.user)
-        if user.is_verified:
-            return redirect("home")
-        logoutUser(request)
-    else:
-        form = CreatePasswordResetForm
-        if request.method == "POST":
-            form = CreatePasswordResetForm(request.POST)
-            if form.is_valid:
-                email = request.POST.get("email")
-
-                if get_user_model().objects.filter(email=email).exists():
-                    # send email
-                    # generate link
-                    # check email send error
-                    messages.info(request, "Email Address in use")
-
-                else:
-                    messages.info(request, "Email Address not in use")
-
-    context = {"form": form}
-    return render(request, "accounts/password_reset.html", context)
