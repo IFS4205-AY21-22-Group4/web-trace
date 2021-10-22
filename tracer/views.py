@@ -63,16 +63,19 @@ def close_contact(request):
         return HttpResponse(template.render(context, request))
     return render(request, "tracer/close_contact.html")
 
+
 @verified_user
 @tracer_only
 def contacts_info(context, request):
     template = loader.get_template("tracer/contacts_info.html")
     return HttpResponse(template.render(context, request))
 
+
 @verified_user
 @tracer_only
 def tracer_error_message(request, message):
     return render(request, "tracer/tracer_error_message.html", {"message": message})
+
 
 @verified_user
 @tracer_only
@@ -130,6 +133,7 @@ def find_contact(request):
 
         return HttpResponse(template.render(context, request))
     return render(request, "tracer/find_contact.html")
+
 
 @verified_user
 @tracer_only

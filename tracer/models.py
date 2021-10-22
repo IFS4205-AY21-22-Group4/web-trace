@@ -47,6 +47,7 @@ class Role(models.Model):
         managed = False
         db_table = "Role"
 
+
 class CloseContact(models.Model):
     id = models.BigAutoField(primary_key=True)
     identity = models.ForeignKey(Identity, on_delete=models.PROTECT)

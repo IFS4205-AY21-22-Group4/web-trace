@@ -99,7 +99,9 @@ def issue_token(request, message=""):
         )
 
         # update medical records table
-        record.token = models.Token.objects.filter(token_uuid=serial).filter(status=1)[0]
+        record.token = models.Token.objects.filter(token_uuid=serial).filter(status=1)[
+            0
+        ]
         record.save()
         message = "Token is issued successfully!"
         return render(request, "issuer/issue_token.html", {"message": message})
@@ -153,6 +155,7 @@ def inactivate_token(request, message=""):
         return render(request, "issuer/inactivate_token.html", {"message": message})
     else:
         return render(request, "issuer/inactivate_token.html")
+
 
 @verified_user
 @issuer_only
