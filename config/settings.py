@@ -38,9 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "knox",
+    "issuer",
+    "tracer",
     "official.apps.OfficialConfig",
     "Staff_Accounts.apps.StaffAccountsConfig",
     "knox",
+    "axes",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +55,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "Staff_Accounts.middleware.OneSessionPerUserMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -80,6 +86,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
+        # "NAME": "capstone",
+        # "USER": "root",
+        # "PASSWORD": "Ljw20010812",
+        # "HOST": "127.0.0.1",
+        # "PORT": "3306",
         "NAME": "pandemic_project",
         "USER": "mariadb",
         "PASSWORD": "mariadb",
@@ -140,3 +151,10 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
 EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
 EMAIL_USE_TLS = True
+
+SILENCED_SYSTEM_CHECKS = ["axes.W003"]
+AXES_ENABLED = True
+AXES_LOGIN_FAILURE_LIMIT = 3
+AXES_COOLOFF_TIME = 24
+ATOMIC_REQUESTS = False
+AXES_LOCK_OUT_BY_USER_OR_IP = True

@@ -78,6 +78,9 @@ class LoggedInUser(models.Model):
     class Meta:
         db_table = "login_staff"
 
+    class Meta:
+        managed = True
+
 
 class Cluster(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -86,6 +89,9 @@ class Cluster(models.Model):
 
     class Meta:
         db_table = "cluster"
+        managed = True
+
+    class Meta:
         managed = True
 
 
@@ -103,6 +109,9 @@ class PositiveCases(models.Model):
         db_table = "positivecases"
         managed = True
 
+    class Meta:
+        managed = True
+
 
 class CloseContact(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -115,6 +124,9 @@ class CloseContact(models.Model):
 
     class Meta:
         db_table = "closecontact"
+        managed = True
+
+    class Meta:
         managed = True
 
 
@@ -134,4 +146,3 @@ class Edge(models.Model):
 
     class Meta:
         db_table = "edge"
-        managed = True

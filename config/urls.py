@@ -14,10 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path, include
+from Staff_Accounts import views as staff_views
 
 urlpatterns = [
+    path(
+        "admin/login/", staff_views.loginPage
+    ),  # admin interface cannot be accessed directly
+    path("admin/logout/", lambda request: redirect("logout")),
     path("admin/", admin.site.urls),
+    path("issuer/", include("issuer.urls")),
+    path("tracer/", include("tracer.urls")),
     path("", include("Staff_Accounts.urls")),
     path("official/", include("official.urls")),
 ]

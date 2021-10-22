@@ -1,3 +1,5 @@
+from django.contrib.auth.models import User
+import Staff_Accounts
 from Staff_Accounts.models import Staff
 from Staff_Accounts.helpers.wrappers import (
     admin_only,
@@ -8,8 +10,11 @@ from Staff_Accounts.helpers.wrappers import (
 
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from Staff_Accounts.helpers.forms import CreateUserForm, CreateUserOTPForm
+from django.contrib.auth import authenticate, get_user_model, login, logout
+from Staff_Accounts.helpers.forms import (
+    CreateUserForm,
+    CreateUserOTPForm,
+)
 from django.contrib.auth.decorators import login_required
 from Staff_Accounts.helpers import crypto
 from Staff_Accounts.helpers.validate import (
@@ -42,8 +47,13 @@ def registerPage(request):
                 return render(request, "accounts/register.html", context)
 
             # Email verification
-            activation_key = crypto.generate_activation_key(email=request.POST["email"])
-            email_verification_error = sendVerificationEmail(request, activation_key)
+            email = request.POST["email"]
+            activation_key = crypto.generate_activation_key(
+                email=request.POST["email"]
+            )  # form.cleaned_data.get("email")
+            email_verification_error = sendVerificationEmail(
+                request, activation_key, email
+            )
 
             if email_verification_error:
                 user.delete()  # Delete created user
@@ -55,13 +65,11 @@ def registerPage(request):
                 context = {"form": form}
                 return render(request, "accounts/register.html", context)
 
-            # user = form.save()
             Staff.objects.create(
                 user=user,
                 roles=role,
                 activation_key=activation_key,
             )
-            # user.activation_key = activation_key
             user.save()
             user = form.cleaned_data.get("email")
             messages.success(request, "Account was created for " + user)
@@ -77,7 +85,9 @@ def activate_account(request):
     key = request.GET["key"]
     if not key:
         raise Http404()
-    user = get_object_or_404(Staff, activation_key=key, email_validated=False)
+    user = get_object_or_404(
+        Staff, activation_key=key, email_validated=False
+    )  # Cant be used multiple times
     user.email_validated = True
     user.save()
 
@@ -88,8 +98,8 @@ def activate_account(request):
 def loginPage(request):
 
     if request.user.is_authenticated:
-        user = get_object_or_404(Staff, user=request.user)
-        if user.is_verified:
+        new_session_user = Staff.objects.get(user=request.user)
+        if new_session_user.is_verified:
             return redirect("home")
         logoutUser(request)
     else:
@@ -98,11 +108,14 @@ def loginPage(request):
             password = request.POST.get("password")
 
             authenticated_user = authenticate(request, email=email, password=password)
-            user = get_object_or_404(Staff, user=authenticated_user)
+            try:
+                new_session_user = Staff.objects.get(user=authenticated_user)
+            except:
+                new_session_user = None
 
-            if user is not None:
+            if new_session_user is not None:
                 if (
-                    user.email_validated == False
+                    new_session_user.email_validated == False
                 ):  # User need to activate email address first
                     messages.info(
                         request,
@@ -126,12 +139,12 @@ def loginPage(request):
                         context = {}
                         return render(request, "accounts/login.html", context)
 
-                    user.most_recent_otp = new_otp
-                    user.save()
+                    new_session_user.most_recent_otp = new_otp
+                    new_session_user.save()
                     return redirect("otp")
 
             else:
-                messages.info(request, "Username or Password is incorrect")
+                messages.info(request, "Email Address or Password is incorrect")
 
     context = {}
     return render(request, "accounts/login.html", context)
@@ -167,18 +180,39 @@ def home(request):
 # add unverified
 @login_required(login_url="login")
 @unverified_user
-def otpVerification(request):
+def otp_verification(request):
     form = CreateUserOTPForm
     if request.method == "POST":
         form = CreateUserOTPForm(request.POST)
-        user = get_object_or_404(Staff, user=request.user)
-        otp = request.POST["otp"]
-        if otp == user.most_recent_otp:
-            user.is_verified = True
-            user.save()
-            return redirect("home")
-        else:
-            messages.error(request, "Invalid OTP")
+        if form.is_valid:
+            user = get_object_or_404(Staff, user=request.user)
+            otp = request.POST["otp"]
+            if user.number_of_attempts >= 2:  # 3 attempts in total
+                user.email_validated = False
+                activation_key = crypto.generate_activation_key(
+                    email=request.user.email
+                )
+                email_verification_error = sendVerificationEmail(
+                    request, activation_key, request.user.email
+                )
+                user.activation_key = activation_key
+                user.number_of_attempts = 0
+                user.save()
+                logoutUser(request)
+                messages.error(
+                    request,
+                    "Your account has been blocked. Please re-activate your account using your email before proceeding! If you didn't receive any mails, please reach out to an administrator",
+                )
+                return redirect("login")
+            elif otp == user.most_recent_otp:
+                user.is_verified = True
+                user.number_of_attempts = 0
+                user.save()
+                return redirect("home")
+            else:
+                user.number_of_attempts = user.number_of_attempts + 1
+                user.save()
+                messages.error(request, "Invalid OTP")
 
     context = {"form": form}
     return render(request, "accounts/otp.html", context)
