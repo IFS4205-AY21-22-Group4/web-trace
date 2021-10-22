@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "issuer",
     "tracer",
     "official.apps.OfficialConfig",
-    "Staff_Accounts",
+    "Staff_Accounts.apps.StaffAccountsConfig",
     "axes",
 ]
 

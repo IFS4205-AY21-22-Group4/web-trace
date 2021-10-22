@@ -3,8 +3,10 @@ from .models import Staff, Cluster
 
 
 class InsertForm(forms.Form):
-    identity_id = forms.DecimalField(
-        label="Identity ID", error_messages={"required": "The identity id is required."}
+    nric = forms.CharField(
+        max_length=9,
+        label="NRIC",
+        error_messages={"required": "The identity id is required."},
     )
     date_test_positive = forms.DateField(
         widget=forms.widgets.DateInput(attrs={"type": "date"})
@@ -23,6 +25,10 @@ class InsertForm(forms.Form):
 
 
 class UpdateForm(forms.Form):
+    nric = forms.CharField(max_length=9, label="NRIC")
+
+
+class EditForm(forms.Form):
     positivecase_id = forms.DecimalField(label="Positive case ID")
     date_test_positive = forms.DateField(
         widget=forms.widgets.DateInput(attrs={"type": "date"})
