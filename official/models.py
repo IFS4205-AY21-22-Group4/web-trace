@@ -2,7 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from knox.models import AuthToken
-from Staff_Accounts.models import UserManager, User, Staff
+from Staff_Accounts.models import UserManager, User, Staff, LoggedInUser
+from issuer.models import Identity, MedicalRecord, Token
 
 
 class SiteOwner(models.Model):
@@ -12,36 +13,6 @@ class SiteOwner(models.Model):
 
     class Meta:
         db_table = "siteowner"
-
-
-class Identity(models.Model):
-    nric = models.CharField(max_length=9, unique=True)
-    fullname = models.CharField(max_length=100)
-    address = models.TextField()
-    phone_num = models.CharField(max_length=8, unique=True)
-
-    class Meta:
-        db_table = "identity"
-
-
-class Token(models.Model):
-    token_uuid = models.CharField(max_length=36)
-    owner = models.ForeignKey(Identity, on_delete=models.PROTECT)
-    issuer = models.CharField(max_length=20)
-    status = models.BooleanField(default=True)
-    hashed_pin = models.CharField(max_length=64)
-
-    class Meta:
-        db_table = "token"
-
-
-class MedicalRecord(models.Model):
-    identity = models.OneToOneField(Identity, on_delete=models.PROTECT)
-    token = models.ForeignKey(Token, on_delete=models.PROTECT)
-    vaccination_status = models.BooleanField(default=False)
-
-    class Meta:
-        db_table = "medicalrecords"
 
 
 class Gateway(models.Model):
@@ -63,23 +34,6 @@ class GatewayRecord(models.Model):
 
     class Meta:
         db_table = "gatewayrecord"
-
-
-class LoggedInUser(models.Model):
-    user = models.OneToOneField(
-        User, related_name="logged_in_user", on_delete=models.CASCADE
-    )
-    # Session keys are 32 characters long
-    session_key = models.CharField(max_length=32, null=True, blank=True)
-
-    def __str__(self):
-        return self.user.username
-
-    class Meta:
-        db_table = "login_staff"
-
-    class Meta:
-        managed = True
 
 
 class Cluster(models.Model):
