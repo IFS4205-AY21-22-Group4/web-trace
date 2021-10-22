@@ -213,6 +213,11 @@ def assign(request):
     )
 
 
+# @verified_user
+def trace(request):
+    return
+
+
 def success(request):
     template = loader.get_template("official/success.html")
     context = {}
