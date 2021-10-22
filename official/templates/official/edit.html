@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update a positive case</title>
+</head>
+<body>
+<h1>Change the details of the positive case:</h1>
+<form action="{% url 'official:edit' %}" method="post">
+{% csrf_token %}
+{% if date_test_postive_change %}
+
+{% endif %}
+{% if is_recovered_change %}
+{% endif %}
+{% if staff_chaange %}
+{% endif %}
+{% if cluster_change %}
+{% endif %}
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>

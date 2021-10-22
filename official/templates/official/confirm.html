@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm positive case</title>
+</head>
+<body>
+<h1>Confirm the following information of the positive case:</h1>
+<p>ID of the positive case: {{case.id}}</p>
+<p>Idenity ID of the positive case: {{case.identity.id}}</p>
+<p>Name of the positive case: {{case.identity.fullname}}</p>
+<p>Date tested positive: {{case.date_test_positive}} {{form.date_test_positive_change}} {{form.date_test_positive_change.label}}</p>
+{% if case.is_recovered %}
+    <p>The case has recovered. {{form.is_recovered_change}} {{form.is_recovered_change.label}}</p>
+{% else %}
+    <p>The case has not recovered. {{form.is_recovered_change}} {{form.is_recovered_change.label}}</p>
+{% endif %}
+{% if case.staff %}
+    <p>Staff assigned: {{case.staff.id}} {{case.staff.username}} {{form.staff_change}} {{form.staff_change.label}}</p>
+{% else %}
+    <p>No staff is assigned to this positive case. {{form.staff_change}} {{form.staff_change.label}}</p>
+{% endif %}
+{% if case.cluster %}
+    <p>Cluster: {{case.cluster.id}} {{case.cluster.name}} {{form.cluster_change}} {{form.cluster_change.label}}</p>
+{% else %}
+    <p>The positive case is not assigned to any cluster. {{form.cluster_change}} {{form.cluster_change.label}}</p>
+{% endif %}
+<form action="{% url 'official:confirm' positivecase_id %}" method="post">
+{% csrf_token %}
+<input type="submit" value="Submit">
+</form>
+<p><a href="{% url 'official:update' %}">Click here to go back to choose another positive case</a></p>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update positive case</title>
+</head>
+<body>
+<h1>Enter the positive case ID you want to update:</h1>
+<form action="{% url 'official:update' %}" method="post">
+{% csrf_token %}
+{{form.as_p}}
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>
