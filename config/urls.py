@@ -24,6 +24,8 @@ urlpatterns = [
     ),  # admin interface cannot be accessed directly
     path("admin/logout/", lambda request: redirect("logout")),
     path("admin/", admin.site.urls),
+    path("issuer/", include("issuer.urls")),
+    path("tracer/", include("tracer.urls")),
     path("", include("Staff_Accounts.urls")),
     path("official/", include("official.urls")),
 ]

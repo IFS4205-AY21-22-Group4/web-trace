@@ -23,3 +23,5 @@ ENV PYTHONUNBUFFERED=1
 RUN pip install --upgrade pip
 COPY . $SERVICE
 RUN pip install -r requirements.txt
+COPY . /code/
+RUN pip install pymysql
