@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "official.apps.OfficialConfig",
     "Staff_Accounts",
     "axes",
+    "knox",
 ]
 
 MIDDLEWARE = [
@@ -147,11 +148,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "Staff_Accounts.User"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-# EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
-EMAIL_HOST_USER = "gwendoline0812@gmail.com"  # hide this afterwards
-# EMAIL_HOST_USER = "lyujiawen@u.nus.edu"
-# EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
-EMAIL_HOST_PASSWORD = "1905ljwljy"
+EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
+EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
 EMAIL_USE_TLS = True
 
 SILENCED_SYSTEM_CHECKS = ["axes.W003"]
