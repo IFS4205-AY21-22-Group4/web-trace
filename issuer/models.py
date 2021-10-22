@@ -16,6 +16,7 @@ from django.utils import timezone
 from knox.models import AuthToken
 from Staff_Accounts.models import Staff, User, UserManager
 
+
 class Identity(models.Model):
     nric = models.CharField(max_length=9, unique=True)
     fullname = models.CharField(max_length=100)
@@ -26,7 +27,7 @@ class Identity(models.Model):
         db_table = "identity"
 
 
-#old
+# old
 # class Medicalrecords(models.Model):
 #    token = models.ForeignKey("Token", models.DO_NOTHING, blank=True, null=True)
 #   identity = models.ForeignKey(Identity, models.DO_NOTHING, blank=True, null=True)
@@ -45,6 +46,7 @@ class Token(models.Model):
     class Meta:
         db_table = "token"
 
+
 class MedicalRecord(models.Model):
     identity = models.OneToOneField(Identity, on_delete=models.PROTECT)
     token = models.ForeignKey(Token, on_delete=models.PROTECT)
@@ -53,7 +55,8 @@ class MedicalRecord(models.Model):
     class Meta:
         db_table = "medicalrecords"
 
-#class Role(models.Model):
+
+# class Role(models.Model):
 #    name = models.CharField(unique=True, max_length=20)
 #    default_role = models.CharField(max_length=20, blank=True, null=True)
 #    permssions = models.CharField(max_length=20, blank=True, null=True)
@@ -63,11 +66,11 @@ class MedicalRecord(models.Model):
 #        db_table = "Role"
 
 
-#class Staff(models.Model):
+# class Staff(models.Model):
 #    username = models.CharField(unique=True, max_length=20)
 #    password = models.CharField(max_length=20)
 #    active = models.CharField(max_length=5, blank=True, null=True)
-    # role_name = models.ForeignKey(Role, models.DO_NOTHING, db_column='role_name')
+# role_name = models.ForeignKey(Role, models.DO_NOTHING, db_column='role_name')
 #    role_name = models.CharField(max_length=20)
 #    email = models.CharField(max_length=20)
 
@@ -76,7 +79,7 @@ class MedicalRecord(models.Model):
 #        db_table = "Staff"
 
 
-#old
+# old
 # class Token(models.Model):
 #    token_serial_number = models.CharField(max_length=14)
 #    identity = models.ForeignKey(Identity, models.DO_NOTHING)
@@ -87,9 +90,3 @@ class MedicalRecord(models.Model):
 #    class Meta:
 #        managed = False
 #        db_table = "Token"
-
-
-
-
-
-

@@ -16,7 +16,7 @@ def index(request):
 
 
 @csrf_protect
-def issue_token(request, message = ""):
+def issue_token(request, message=""):
     if request.method == "POST":
 
         serial = request.POST.get("serial", None)
@@ -42,9 +42,7 @@ def issue_token(request, message = ""):
             identity = identity_instance[0].id
 
         # check whether the user have active token
-        token_instance = models.Token.objects.filter(owner_id=identity).filter(
-            status=1
-        )
+        token_instance = models.Token.objects.filter(owner_id=identity).filter(status=1)
         if token_instance:
             return render(
                 request,
@@ -54,10 +52,8 @@ def issue_token(request, message = ""):
                 },
             )
 
-        #check whether the token is on use
-        active_token = models.Token.objects.filter(token_uuid=serial).filter(
-            status=1
-        )
+        # check whether the token is on use
+        active_token = models.Token.objects.filter(token_uuid=serial).filter(status=1)
         if active_token:
             return render(
                 request,
@@ -78,47 +74,43 @@ def issue_token(request, message = ""):
                 },
             )
         record = record[0]
-        
-    
-        
-        #get staff
+
+        # get staff
         user = request.user.id
-        staff_instance = models.Staff.objects.filter(user_id =  user)
+        staff_instance = models.Staff.objects.filter(user_id=user)
         if not staff_instance:
             return render(
                 request,
                 "issuer/error.html",
-                {
-                    "message": "The staff is not recorded."
-                },
+                {"message": "The staff is not recorded."},
             )
         else:
             staff = identity_instance[0]
 
         new_token = models.Token.objects.create(
             token_uuid=serial,
-            #identity=models.Identity.objects.get(nric=nric_num),
+            # identity=models.Identity.objects.get(nric=nric_num),
             owner=models.Identity.objects.get(nric=nric_num),
-            #staff_id=1,  # temporary all set to 1
-            #staff = get_user_model().objects.get(user=request.user).id,
-            issuer = staff,
+            # staff_id=1,  # temporary all set to 1
+            # staff = get_user_model().objects.get(user=request.user).id,
+            issuer=staff,
             status=1,  # 1 for active
             hashed_pin=h_pin,
         )
 
         # update medical records table
-        #record.token = models.Token.objects.filter(token_serial_number=serial)[0]
+        # record.token = models.Token.objects.filter(token_serial_number=serial)[0]
         record.token = models.Token.objects.filter(token_uuid=serial)[0]
         # record.token = new_token
         record.save()
         message = "Token is issued successfully!"
         return render(request, "issuer/issue_token.html", {"message": message})
-    else: 
+    else:
         return render(request, "issuer/issue_token.html")
 
 
 @csrf_protect
-def inactivate_token(request, message = ""):
+def inactivate_token(request, message=""):
     # need to test
     if request.method == "POST":
         nric_num = request.POST.get("nric", None)
@@ -146,9 +138,7 @@ def inactivate_token(request, message = ""):
             )
         record = record[0]
 
-        token_instance = models.Token.objects.filter(owner_id=identity).filter(
-            status=1
-        )
+        token_instance = models.Token.objects.filter(owner_id=identity).filter(status=1)
         if not token_instance:
             # return HttpResponse("The nric holder has no active token!")
             return render(
@@ -163,11 +153,11 @@ def inactivate_token(request, message = ""):
             record.save()
         message = "Token is inactivated successfully!"
         return render(request, "issuer/inactivate_token.html", {"message": message})
-    else: 
+    else:
         return render(request, "issuer/inactivate_token.html")
 
 
-#def inact_result(request):
+# def inact_result(request):
 #    message = "You have inactivated a token successfully."
 #    return render(request, "issuer/inact_result.html", {"message": message})
 

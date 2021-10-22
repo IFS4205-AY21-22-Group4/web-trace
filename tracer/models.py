@@ -14,7 +14,7 @@ from knox.models import AuthToken
 from Staff_Accounts.models import Staff, User, UserManager
 from issuer.models import Token, MedicalRecord, Identity
 
-#class Closecontact(models.Model):
+# class Closecontact(models.Model):
 #    identity = models.ForeignKey("Identity", models.DO_NOTHING, blank=True, null=True)
 #    positivecase_id = models.IntegerField(blank=True, null=True)
 #    staff_id = models.IntegerField(blank=True, null=True)
@@ -32,6 +32,7 @@ class Cluster(models.Model):
     class Meta:
         db_table = "cluster"
 
+
 class PositiveCases(models.Model):
     id = models.BigAutoField(primary_key=True)
     identity = models.ForeignKey(Identity, on_delete=models.PROTECT)
@@ -45,7 +46,8 @@ class PositiveCases(models.Model):
     class Meta:
         db_table = "positivecases"
 
-#class Medicalrecords(models.Model):
+
+# class Medicalrecords(models.Model):
 #    token = models.ForeignKey("Token", models.DO_NOTHING, blank=True, null=True)
 #    identity = models.ForeignKey(Identity, models.DO_NOTHING, blank=True, null=True)
 #    vaccination_status = models.CharField(max_length=20, blank=True, null=True)
@@ -53,6 +55,7 @@ class PositiveCases(models.Model):
 #    class Meta:
 #        managed = False
 #        db_table = "MedicalRecords"
+
 
 class Role(models.Model):
     name = models.CharField(unique=True, max_length=20)
@@ -64,7 +67,7 @@ class Role(models.Model):
         db_table = "Role"
 
 
-#class Staff(models.Model):
+# class Staff(models.Model):
 #    username = models.CharField(unique=True, max_length=20)
 #    password = models.CharField(max_length=32, blank=True, null=True)
 #    active = models.CharField(max_length=5, blank=True, null=True)
@@ -76,7 +79,7 @@ class Role(models.Model):
 #        db_table = "Staff"
 
 
-#class Token(models.Model):
+# class Token(models.Model):
 #    token_serial_number = models.CharField(max_length=10)
 #    identity = models.ForeignKey(Identity, models.DO_NOTHING)
 #    staff_id = models.IntegerField()
@@ -88,14 +91,14 @@ class Role(models.Model):
 #        db_table = "Token"
 
 
-
-
 class CloseContact(models.Model):
     id = models.BigAutoField(primary_key=True)
     identity = models.ForeignKey(Identity, on_delete=models.PROTECT)
     positivecase = models.ForeignKey(PositiveCases, on_delete=models.CASCADE)
     staff = models.ForeignKey(Staff, on_delete=models.PROTECT, blank=True, null=True)
-    cluster = models.ForeignKey(Cluster, on_delete=models.CASCADE, blank=True, null=True)
+    cluster = models.ForeignKey(
+        Cluster, on_delete=models.CASCADE, blank=True, null=True
+    )
 
     class Meta:
         db_table = "closecontact"
