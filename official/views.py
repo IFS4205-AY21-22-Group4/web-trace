@@ -18,7 +18,7 @@ from .models import (
 )
 
 # from Staff_Accounts.models import Staff
-from .forms import InsertForm, UpdateForm, ConfirmForm
+from .forms import InsertForm, UpdateForm, ConfirmForm, EditForm
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from Staff_Accounts.helpers.wrappers import (
@@ -138,7 +138,7 @@ def update(request):
 # @verified_user
 def confirm(request, nric):
     template = loader.get_template("official/confirm.html")
-    case = PositiveCases.objects.get(pk=positivecase_id)
+    case = PositiveCases.objects.get(nric=nric)
     if request.method == "POST":
         form = ConfirmForm(request.POST)
         if form.is_valid():
@@ -153,14 +153,14 @@ def confirm(request, nric):
                 "cluster_change": cluster_change,
             }
             return HttpResponseRedirect(
-                reverse("official:edit", args=(positivecase_id, change_dict))
+                reverse("official:edit", args=(nric, change_dict))
             )
     else:
         form = ConfirmForm()
     context = {
         "form": form,
         "case": case,
-        "positivecase_id": positivecase_id,
+        "positivecase_id": nric,
     }
     return HttpResponse(template.render(context, request))
 
