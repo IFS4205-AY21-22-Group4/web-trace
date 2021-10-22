@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "official.apps.OfficialConfig",
     "Staff_Accounts",
     "axes",
-    "knox",
 ]
 
 MIDDLEWARE = [
