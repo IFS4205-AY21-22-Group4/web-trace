@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "tracer",
     "official.apps.OfficialConfig",
     "Staff_Accounts.apps.StaffAccountsConfig",
-    "knox",
     "axes",
 ]
 
