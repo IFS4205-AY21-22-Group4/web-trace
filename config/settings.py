@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "official.apps.OfficialConfig",
-    "Staff_Accounts",
+    "Staff_Accounts.apps.StaffAccountsConfig",
+    "knox",
 ]
 
 MIDDLEWARE = [

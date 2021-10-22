@@ -16,7 +16,13 @@
             Positive case id: {{case.id}}<br/>
             Identity id: {{case.identity.id}}<br/>
             Date tested positive: {{case.date_test_positive}}<br/>
-            ID of assigned staff: {{case.staff.id}}<br/>
+            ID of assigned staff:
+            {% if case.staff.id == None %}
+                No staff assigned
+            {% else %}
+                {{case.staff.id}}
+            {% endif %}
+            <br/>
         </p>
     </li>
 {% endfor %}
@@ -29,7 +35,13 @@
             Close contact id: {{contact.id}}<br/>
             Identity id: {{contact.identity.id}}<br/>
             ID of positive case related: {{contact.positivecase.id}}<br/>
-            ID of assigned staff: {{contact.staff.id}}<br/>
+            ID of assigned staff:
+            {% if contact.staff.id == None %}
+                No staff assigned
+            {% else %}
+                {{contact.staff.id}}
+            {% endif %}
+            <br/>
         </p>
     </li>
 {% endfor %}
