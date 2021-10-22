@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "tracer",
     "official.apps.OfficialConfig",
     "Staff_Accounts",
+    "axes",
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "Staff_Accounts.middleware.OneSessionPerUserMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -152,3 +155,10 @@ EMAIL_HOST_USER = "gwendoline0812@gmail.com" # hide this afterwards
 #EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
 EMAIL_HOST_PASSWORD = '1905ljwljy'
 EMAIL_USE_TLS = True
+
+SILENCED_SYSTEM_CHECKS = ["axes.W003"]
+AXES_ENABLED = True
+AXES_LOGIN_FAILURE_LIMIT = 3
+AXES_COOLOFF_TIME = 24
+ATOMIC_REQUESTS = False
+AXES_LOCK_OUT_BY_USER_OR_IP = True

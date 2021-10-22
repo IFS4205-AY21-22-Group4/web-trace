@@ -24,7 +24,7 @@ def validateRoles(user, role):
 
 
 # Send email verification
-def sendVerificationEmail(request, activation_key):
+def sendVerificationEmail(request, activation_key, email):
     email_verification_error = False
 
     subject = "Central Login Account Verification"
@@ -36,7 +36,7 @@ def sendVerificationEmail(request, activation_key):
     )
 
     try:
-        send_mail(subject, message, settings.SERVER_EMAIL, [request.POST["email"]])
+        send_mail(subject, message, settings.SERVER_EMAIL, [email])
     except:
         email_verification_error = True
     return email_verification_error

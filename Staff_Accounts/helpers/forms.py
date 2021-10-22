@@ -16,5 +16,5 @@ class CreateUserOTPForm(forms.Form):
     otp = forms.CharField(max_length=6)
 
 
-class CreatePasswordResetForm(forms.Form):
-    email = forms.EmailField()
+# class CreatePasswordResetForm(forms.Form):
+#     email = forms.EmailField()
