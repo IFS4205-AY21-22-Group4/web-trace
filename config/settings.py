@@ -85,11 +85,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        # "NAME": "capstone",
-        # "USER": "root",
-        # "PASSWORD": "Ljw20010812",
-        # "HOST": "127.0.0.1",
-        # "PORT": "3306",
         "NAME": "pandemic_project",
         "USER": "mariadb",
         "PASSWORD": "mariadb",
@@ -154,6 +149,6 @@ EMAIL_USE_TLS = True
 SILENCED_SYSTEM_CHECKS = ["axes.W003"]
 AXES_ENABLED = True
 AXES_LOGIN_FAILURE_LIMIT = 3
-AXES_COOLOFF_TIME = 0
+AXES_COOLOFF_TIME = 24
 ATOMIC_REQUESTS = False
 AXES_LOCK_OUT_BY_USER_OR_IP = True
