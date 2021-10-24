@@ -9,13 +9,18 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from Staff_Accounts.models import Staff, User, UserManager
 from issuer.models import Token, MedicalRecord, Identity
+from Staff_Accounts.helpers.wrappers import tracer_only, verified_user
 
 # Create your views here.
+@verified_user
+@tracer_only
 def index(request):
     return render(request, "tracer/tracer.html")
 
 
 @csrf_protect
+@verified_user
+@tracer_only
 def close_contact(request):
     if request.method == "POST":
         positive_id = request.POST.get("pos_id", None)
@@ -29,14 +34,11 @@ def close_contact(request):
                 request,
                 "tracer/tracer_error_message.html",
                 {
-                    "message": "Invalid postive case id! Make sure you enter the right number."
+                    "message": "Invalid postive case id or there is no close contact of that positive case assigned to you."
                 },
             )
 
-        # contact_list = CloseContact.objects.filter(positivecase_id=positive_id)
-        # user = get_user_model().objects.get(user=request.user)
         user = request.user.id
-        # user = 101
         contact_list = CloseContact.objects.filter(positivecase_id=positive_id).filter(
             staff_id=user
         )
@@ -62,15 +64,21 @@ def close_contact(request):
     return render(request, "tracer/close_contact.html")
 
 
+@verified_user
+@tracer_only
 def contacts_info(context, request):
     template = loader.get_template("tracer/contacts_info.html")
     return HttpResponse(template.render(context, request))
 
 
+@verified_user
+@tracer_only
 def tracer_error_message(request, message):
     return render(request, "tracer/tracer_error_message.html", {"message": message})
 
 
+@verified_user
+@tracer_only
 @csrf_protect
 def find_contact(request):
     if request.method == "POST":
@@ -88,10 +96,7 @@ def find_contact(request):
             identity = identity_instance[0].id
 
         identity = Identity.objects.filter(nric=nric_num)[0]
-        # contacts = CloseContact.objects.filter(identity_id=identity.id)
-        # user = get_user_model().objects.get(user=request.user)
         user = request.user.id
-        # user = 101
         contacts = CloseContact.objects.filter(identity_id=identity.id).filter(
             staff_id=user
         )
@@ -130,6 +135,8 @@ def find_contact(request):
     return render(request, "tracer/find_contact.html")
 
 
+@verified_user
+@tracer_only
 def individual_info(context, request):
     template = loader.get_template("tracer/individual_info.html")
     return HttpResponse(template.render(context, request))
