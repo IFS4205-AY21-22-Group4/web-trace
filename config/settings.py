@@ -85,11 +85,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        # "NAME": "capstone",
-        # "USER": "root",
-        # "PASSWORD": "Ljw20010812",
-        # "HOST": "127.0.0.1",
-        # "PORT": "3306",
         "NAME": "pandemic_project",
         "USER": "mariadb",
         "PASSWORD": "mariadb",
