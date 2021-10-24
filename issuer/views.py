@@ -7,18 +7,15 @@ import hashlib
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from Staff_Accounts.models import Staff, User, UserManager
-from Staff_Accounts.helpers.wrappers import issuer_only, verified_user
+
 
 # Create your views here.
-@verified_user
-@issuer_only
 def index(request):
+    # return HttpResponse("You are at the token issuer interface.")
     return render(request, "issuer/index.html")
 
 
 @csrf_protect
-@verified_user
-@issuer_only
 def issue_token(request, message=""):
     if request.method == "POST":
 
@@ -88,20 +85,23 @@ def issue_token(request, message=""):
                 {"message": "The staff is not recorded."},
             )
         else:
-            staff = staff_instance[0]
+            staff = identity_instance[0]
 
         new_token = models.Token.objects.create(
             token_uuid=serial,
+            # identity=models.Identity.objects.get(nric=nric_num),
             owner=models.Identity.objects.get(nric=nric_num),
+            # staff_id=1,  # temporary all set to 1
+            # staff = get_user_model().objects.get(user=request.user).id,
             issuer=staff,
             status=1,  # 1 for active
             hashed_pin=h_pin,
         )
 
         # update medical records table
-        record.token = models.Token.objects.filter(token_uuid=serial).filter(status=1)[
-            0
-        ]
+        # record.token = models.Token.objects.filter(token_serial_number=serial)[0]
+        record.token = models.Token.objects.filter(token_uuid=serial)[0]
+        # record.token = new_token
         record.save()
         message = "Token is issued successfully!"
         return render(request, "issuer/issue_token.html", {"message": message})
@@ -110,9 +110,8 @@ def issue_token(request, message=""):
 
 
 @csrf_protect
-@verified_user
-@issuer_only
 def inactivate_token(request, message=""):
+    # need to test
     if request.method == "POST":
         nric_num = request.POST.get("nric", None)
         identity_instance = models.Identity.objects.filter(nric=nric_num)
@@ -141,6 +140,7 @@ def inactivate_token(request, message=""):
 
         token_instance = models.Token.objects.filter(owner_id=identity).filter(status=1)
         if not token_instance:
+            # return HttpResponse("The nric holder has no active token!")
             return render(
                 request,
                 "issuer/error.html",
@@ -157,7 +157,10 @@ def inactivate_token(request, message=""):
         return render(request, "issuer/inactivate_token.html")
 
 
-@verified_user
-@issuer_only
+# def inact_result(request):
+#    message = "You have inactivated a token successfully."
+#    return render(request, "issuer/inact_result.html", {"message": message})
+
+
 def error_message(request, message):
     return render(request, "issuer/error_message.html", {"message": message})
