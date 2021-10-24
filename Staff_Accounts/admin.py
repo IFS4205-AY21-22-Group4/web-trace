@@ -5,8 +5,4 @@ from Staff_Accounts.models import Staff
 from django.contrib import admin
 
 # Register your models here.
-class UserAdmin(admin.ModelAdmin):
-    pass
-
-
-admin.site.register(Staff, UserAdmin)
+admin.site.register(Staff)
