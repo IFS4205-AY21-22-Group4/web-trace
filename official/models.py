@@ -54,7 +54,7 @@ class PositiveCases(models.Model):
     identity = models.ForeignKey(Identity, on_delete=models.PROTECT)
     date_test_positive = models.DateField()
     is_recovered = models.BooleanField()
-    staff = models.ForeignKey(Staff, on_delete=models.PROTECT, blank=True, null=True)
+    staff = models.ForeignKey(Staff, on_delete=models.DO_NOTHING, blank=True, null=True)
     cluster = models.ForeignKey(
         Cluster, on_delete=models.CASCADE, blank=True, null=True
     )
@@ -71,7 +71,7 @@ class CloseContact(models.Model):
     id = models.BigAutoField(primary_key=True)
     identity = models.ForeignKey(Identity, on_delete=models.PROTECT)
     positivecase = models.ForeignKey(PositiveCases, on_delete=models.CASCADE)
-    staff = models.ForeignKey(Staff, on_delete=models.PROTECT, blank=True, null=True)
+    staff = models.ForeignKey(Staff, on_delete=models.DO_NOTHING, blank=True, null=True)
     cluster = models.ForeignKey(
         Cluster, on_delete=models.CASCADE, blank=True, null=True
     )
