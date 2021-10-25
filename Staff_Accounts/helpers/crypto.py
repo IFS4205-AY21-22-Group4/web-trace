@@ -12,7 +12,7 @@ def pg_records(request, list, num):
 
 
 def generate_activation_key(email):
-    db_logger.info("generate_activation_ley")
+    db_logger.info("generate_activation_key")
     chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$%^&*(-_=+)"
     while True:
         saltPre = get_random_string(20, chars)
