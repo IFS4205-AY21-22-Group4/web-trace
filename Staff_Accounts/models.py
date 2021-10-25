@@ -73,7 +73,7 @@ class Staff(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     roles = models.CharField(max_length=20, blank=True)
     activation_key = models.CharField(
-        max_length=255, default=1
+        max_length=255, unique=True
     )  # link for email verification
     most_recent_otp = models.CharField(
         max_length=6, blank=True
