@@ -36,7 +36,7 @@ class UserManager(BaseUserManager):
         group = Group.objects.get(name="Administrators")
         user.groups.add(group)
         Staff.objects.create(
-            user=user, roles="administrator", email_validated=True, is_verified=True
+            user=user, roles="Super", email_validated=True, is_verified=True
         )
         user.save()
         return user

@@ -7,10 +7,10 @@ from django.contrib.auth.models import Permission
 
 GROUPS = ["Administrators", "Officials", "Contact Tracers", "Token Issuers"]
 PERMISSIONS = [
-    "Can add user",
+    # "Can add user",
     "Can delete user",
     "Can view user",
-    "Can add staff",
+    # "Can add staff",
     "Can delete staff",
     "Can view staff",
 ]
