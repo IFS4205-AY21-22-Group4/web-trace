@@ -6,7 +6,9 @@ from django.test import TestCase
 # Create your tests here.
 class CreateUser(TestCase):
     def setUp(self) -> None:
-        connection.cursor().execute("CREATE TABLE django_db_logger_statuslog")
+        connection.cursor().execute(
+            "CREATE TABLE pandemic_project.django_db_logger_statuslog"
+        )
 
     def test_create_user(self):
         user = get_user_model().objects.create_user(
@@ -26,7 +28,9 @@ class CreateUser(TestCase):
 
 class LogInTest(TestCase):
     def setUp(self) -> None:
-        connection.cursor().execute("CREATE TABLE django_db_logger_statuslog")
+        connection.cursor().execute(
+            "CREATE TABLE pandemic_project.django_db_logger_statuslog"
+        )
 
         user = get_user_model().objects.create_user(
             email="testdata@testing.com",
