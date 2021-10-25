@@ -3,6 +3,9 @@ from django.db import models
 from django.db.models import signals
 from django.dispatch import receiver
 from django.contrib.auth import user_logged_in, user_logged_out
+import logging
+
+db_logger = logging.getLogger("db")
 
 
 class UserManager(BaseUserManager):
@@ -10,6 +13,8 @@ class UserManager(BaseUserManager):
     use_in_migrations = True
 
     def create_user(self, email, password=None):
+        db_logger.info("create user")
+
         """
         Creates and saves a user with the given email and password.
         """
@@ -27,6 +32,8 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None):
+        db_logger.info("create super_user")
+
         """
         Creates and saves a superuser with the given email and password.
         """
@@ -86,10 +93,12 @@ class Staff(models.Model):
 # signal to delete user from Staff table using User relation
 @receiver(signals.post_delete, sender=Staff)
 def delete_user(sender, instance=None, **kwargs):
+    db_logger.info("delete_user")
+
     try:
         instance.user
     except User.DoesNotExist:
-        pass
+        db_logger.exception("delete user attempted to delete inexistent user")
     else:
         instance.user.delete()
     signals.post_delete.connect(delete_user, sender=Staff)
@@ -113,9 +122,13 @@ class LoggedInUser(models.Model):
 
 @receiver(user_logged_in)
 def on_user_logged_in(sender, request, **kwargs):
+    db_logger.info("on_user_logged_in")
+
     LoggedInUser.objects.get_or_create(user=kwargs.get("user"))
 
 
 @receiver(user_logged_out)
 def on_user_logged_out(sender, **kwargs):
+    db_logger.info("on_user_logged_out")
+
     LoggedInUser.objects.filter(user=kwargs.get("user")).delete()
