@@ -13,7 +13,7 @@ def pg_records(request, list, num):
 
 def generate_activation_key(email):
     db_logger.info("generate_activation_ley")
-    chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
+    chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$%^&*(-_=+)"
     while True:
         saltPre = get_random_string(20, chars)
         saltPost = get_random_string(20, chars)
@@ -29,5 +29,5 @@ def generate_activation_key(email):
 
 def generate_otp():
     db_logger.info("generate_otp")
-    chars = "abcdefghijklmnopqrstuvwxyz0123456789"
+    chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     return get_random_string(6, chars)
