@@ -5,8 +5,9 @@
     <title>List of active clusters</title>
   </head>
   <body>
-<a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/><br/>
-<a href="{% url 'official:update' %}">Click here to update a new positive case</a>
+<div><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/><br/></div>
+<div><a href="{% url 'official:update' %}">Click here to update a new positive case</a><br/><br/></div>
+<div><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/><br/></div>
 {% if cluster_number_dict %}
 <h1>List of active clusters:</h1>
     <ul>

@@ -6,6 +6,9 @@
 </head>
 <body>
 <p>The change has been saved to the database successfully.</p>
-<p><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a></p>
+<div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
+<div><br/><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/></div>
+<div><br/><a href="{% url 'official:update' %}">Click here to update an existing positive case</a><br/></div>
+<div><br/><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/></div>
 </body>
 </html>

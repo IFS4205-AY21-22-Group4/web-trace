@@ -125,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Singapore"
 
 USE_I18N = True
 
@@ -147,13 +147,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "Staff_Accounts.User"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
-EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
+# EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
+# EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
+EMAIL_HOST_USER = "guoai526@gmail.com"
+EMAIL_HOST_PASSWORD = "20000526jin"
 EMAIL_USE_TLS = True
 
 SILENCED_SYSTEM_CHECKS = ["axes.W003"]
 AXES_ENABLED = True
 AXES_LOGIN_FAILURE_LIMIT = 3
-AXES_COOLOFF_TIME = 24
+AXES_COOLOFF_TIME = 0
 ATOMIC_REQUESTS = False
 AXES_LOCK_OUT_BY_USER_OR_IP = True

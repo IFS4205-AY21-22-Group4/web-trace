@@ -15,13 +15,13 @@ class InsertForm(forms.Form):
         label="The positive case has recovered", required=False
     )
     staff = forms.ModelChoiceField(
-        label="Staff assigned", queryset=Staff.objects.all(), required=False
+        label="Staff assigned",
+        queryset=Staff.objects.filter(user__groups__name="Contact Tracers"),
+        required=False,
     )
-    # have_cluster = forms.BooleanField(label='The positive case belongs to an existing cluster')
     cluster = forms.ModelChoiceField(
-        label="Cluster", queryset=Cluster.objects.all(), required=False
+        label="Cluster", queryset=Cluster.objects.filter(status=True), required=False
     )
-    # widget=forms.HiddenInput()
 
 
 class UpdateForm(forms.Form):
@@ -29,7 +29,6 @@ class UpdateForm(forms.Form):
 
 
 class EditForm(forms.Form):
-    positivecase_id = forms.DecimalField(label="Positive case ID")
     date_test_positive = forms.DateField(
         widget=forms.widgets.DateInput(attrs={"type": "date"})
     )
@@ -37,10 +36,12 @@ class EditForm(forms.Form):
         label="The positive case has recovered", required=False
     )
     staff = forms.ModelChoiceField(
-        label="Staff assigned", queryset=Staff.objects.all(), required=False
+        label="Staff assigned",
+        queryset=Staff.objects.filter(user__groups__name="Contact Tracers"),
+        required=False,
     )
     cluster = forms.ModelChoiceField(
-        label="Cluster", queryset=Cluster.objects.all(), required=False
+        label="Cluster", queryset=Cluster.objects.filter(status=True), required=False
     )
 
 
@@ -49,3 +50,14 @@ class ConfirmForm(forms.Form):
     is_recovered_change = forms.BooleanField(label="change", required=False)
     staff_change = forms.BooleanField(label="change", required=False)
     cluster_change = forms.BooleanField(label="change", required=False)
+
+
+class AssignForm(forms.Form):
+    cluster = forms.ModelChoiceField(
+        label="Cluster", queryset=Cluster.objects.filter(status=True), required=True
+    )
+    staff = forms.ModelChoiceField(
+        label="Staff assigned",
+        queryset=Staff.objects.filter(user__groups__name="Contact Tracers"),
+        required=True,
+    )
