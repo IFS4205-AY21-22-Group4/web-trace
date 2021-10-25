@@ -11,10 +11,8 @@ db_logger = logging.getLogger(DB)
 
 GROUPS = ["Administrators", "Officials", "Contact Tracers", "Token Issuers"]
 PERMISSIONS = [
-    # "Can add user",
     "Can delete user",
     "Can view user",
-    # "Can add staff",
     "Can delete staff",
     "Can view staff",
 ]

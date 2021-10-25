@@ -17,7 +17,7 @@ def generate_activation_key(email):
     while True:
         saltPre = get_random_string(20, chars)
         saltPost = get_random_string(20, chars)
-        activation_key = hashlib.sha256(
+        activation_key = hashlib.sha512(
             (saltPre + SECRET_KEY + email + saltPost).encode("utf-8")
         ).hexdigest()
         try:
