@@ -26,10 +26,11 @@ class Identity(models.Model):
     class Meta:
         db_table = "identity"
 
+
 class Token(models.Model):
     token_uuid = models.CharField(max_length=36)
     owner = models.ForeignKey(Identity, on_delete=models.PROTECT)
-    issuer = models.ForeignKey(Staff, on_delete=models.PROTECT)
+    issuer = models.ForeignKey(Staff, null = True, on_delete=models.SET_NULL)
     status = models.BooleanField(default=True)
     hashed_pin = models.CharField(max_length=64)
 
