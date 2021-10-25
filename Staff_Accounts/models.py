@@ -132,9 +132,3 @@ def on_user_logged_out(sender, **kwargs):
     db_logger.info("on_user_logged_out")
 
     LoggedInUser.objects.filter(user=kwargs.get("user")).delete()
-
-
-class django_db_logger_statuslog(models.Model):
-    class meta:
-        db_table = "django_db_logger_statuslog"
-        managed = True
