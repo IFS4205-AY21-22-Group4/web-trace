@@ -4,7 +4,9 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 import logging
 
-db_logger = logging.getLogger("db")
+from config.settings import DB
+
+db_logger = logging.getLogger(DB)
 
 # Check if user is unauthenticated
 def unauthenticated_user(view_func):

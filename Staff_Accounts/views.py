@@ -25,7 +25,9 @@ from Staff_Accounts.helpers.validate import (
 
 import logging
 
-db_logger = logging.getLogger("db")
+from config.settings import DB
+
+db_logger = logging.getLogger(DB)
 
 # Create your views here.
 @admin_only

@@ -5,7 +5,9 @@ from django.dispatch import receiver
 from django.contrib.auth import user_logged_in, user_logged_out
 import logging
 
-db_logger = logging.getLogger("db")
+from config.settings import DB
+
+db_logger = logging.getLogger(DB)
 
 
 class UserManager(BaseUserManager):

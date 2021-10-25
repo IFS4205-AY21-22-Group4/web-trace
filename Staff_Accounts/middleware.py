@@ -1,7 +1,9 @@
 from django.contrib.sessions.models import Session
 import logging
 
-db_logger = logging.getLogger("db")
+from config.settings import DB
+
+db_logger = logging.getLogger(DB)
 
 # This method enables only one user per session
 # In essence, there cannot be two different users using the same session

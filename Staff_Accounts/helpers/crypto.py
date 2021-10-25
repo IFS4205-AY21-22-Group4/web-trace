@@ -1,7 +1,9 @@
 import hashlib, logging
 from django.utils.crypto import get_random_string
 
-db_logger = logging.getLogger("db")
+from config.settings import DB
+
+db_logger = logging.getLogger(DB)
 
 
 def pg_records(request, list, num):

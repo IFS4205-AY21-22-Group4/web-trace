@@ -3,7 +3,9 @@ from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 import logging
 
-db_logger = logging.getLogger("db")
+from config.settings import DB
+
+db_logger = logging.getLogger(DB)
 
 # Check role inputted during registration
 def validateRoles(user, role):

@@ -154,6 +154,7 @@ AXES_COOLOFF_TIME = 24
 ATOMIC_REQUESTS = False
 AXES_LOCK_OUT_BY_USER_OR_IP = True
 
+DB = "pandemic_project"
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -169,5 +170,5 @@ LOGGING = {
             "class": "django_db_logger.db_log_handler.DatabaseLogHandler",
         },
     },
-    "loggers": {"db": {"handlers": ["db_log"], "level": "DEBUG"}},
+    "loggers": {DB: {"handlers": ["db_log"], "level": "DEBUG"}},
 }
