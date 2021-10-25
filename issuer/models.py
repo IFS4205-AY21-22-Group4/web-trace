@@ -26,7 +26,6 @@ class Identity(models.Model):
     class Meta:
         db_table = "identity"
 
-
 class Token(models.Model):
     token_uuid = models.CharField(max_length=36)
     owner = models.ForeignKey(Identity, on_delete=models.PROTECT)
@@ -45,3 +44,4 @@ class MedicalRecord(models.Model):
 
     class Meta:
         db_table = "medicalrecords"
+
