@@ -87,12 +87,13 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "pandemic_project",
-        "USER": "mariadb",
+        # "USER": "mariadb",
+        "USER": "root",
         "PASSWORD": "mariadb",
         "DEFAULT_CHARSET": "utf-8",
         "HOST": "127.0.0.1",
         "PORT": "3306",
-        "TEST": {"NAME": "pandemic_project"},
+        # "TEST": {"NAME": "pandemic_project"},
     }
 }
 
@@ -154,7 +155,7 @@ AXES_COOLOFF_TIME = 24
 ATOMIC_REQUESTS = False
 AXES_LOCK_OUT_BY_USER_OR_IP = True
 
-DB = "db"
+DB = "pandemic_project"
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
