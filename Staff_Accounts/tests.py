@@ -1,9 +1,13 @@
 from django.contrib.auth import get_user_model
+from django.db import connection
 from Staff_Accounts.models import Staff
 from django.test import TestCase
 
 # Create your tests here.
 class CreateUser(TestCase):
+    def setUp(self) -> None:
+        connection.cursor().execute("CREATE TABLE django_db_logger_statuslog")
+
     def test_create_user(self):
         user = get_user_model().objects.create_user(
             email="testdata@testing.com",
@@ -22,6 +26,8 @@ class CreateUser(TestCase):
 
 class LogInTest(TestCase):
     def setUp(self) -> None:
+        connection.cursor().execute("CREATE TABLE django_db_logger_statuslog")
+
         user = get_user_model().objects.create_user(
             email="testdata@testing.com",
             password="xA12$$fdg2356!f5",
