@@ -130,7 +130,7 @@
     <form  method="post"> {% csrf_token %} {% autoescape on %}
         <div align="center">
             <label for="serial_number">Token Name:</label>
-            <input type="text" name="serial" size="12" maxlength="20" id="serial_number" required>
+            <input type="text" name="serial" size="12" minlength="20" maxlength="20" id="serial_number" required>
         </div>
         
         <div align="center">
