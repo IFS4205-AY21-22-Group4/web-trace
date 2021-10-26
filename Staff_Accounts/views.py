@@ -25,12 +25,18 @@ from Staff_Accounts.helpers.validate import (
     sendVerificationEmail,
 )
 
+import logging
+
+from config.settings import DB
+
+db_logger = logging.getLogger(DB)
+
 # Create your views here.
 @admin_only
 @verified_user
 def registerPage(request):
     form = CreateUserForm()
-
+    db_logger.info("Register Page")
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
@@ -74,6 +80,7 @@ def registerPage(request):
             )
             user.save()
             user = form.cleaned_data.get("email")
+            db_logger.info("User created")
             messages.success(request, "Account was created for " + user)
 
             return redirect("register")  # Sends a new form
@@ -90,6 +97,7 @@ def activate_account(request):
     user = get_object_or_404(
         Staff, activation_key=key, email_validated=False
     )  # Cant be used multiple times
+    db_logger.info("activate_account")
     user.email_validated = True
     user.save()
 
@@ -98,6 +106,7 @@ def activate_account(request):
 
 @unauthenticated_user
 def loginPage(request):
+    db_logger.info("login")
 
     if request.user.is_authenticated:
         new_session_user = Staff.objects.get(user=request.user)
@@ -154,6 +163,8 @@ def loginPage(request):
 
 @verified_user
 def logoutUser(request):
+    db_logger.info("logout")
+
     user = get_object_or_404(Staff, user=request.user)
     user.is_verified = False
     user.save()
@@ -163,6 +174,8 @@ def logoutUser(request):
 
 @verified_user
 def home(request):
+    db_logger.info("home")
+
     group = None
     if request.user.groups.exists():
         group = request.user.groups.all()[0].name
@@ -183,6 +196,8 @@ def home(request):
 @login_required(login_url="login")
 @unverified_user
 def otp_verification(request):
+    db_logger.info("otp_verification")
+
     form = CreateUserOTPForm
     if request.method == "POST":
         form = CreateUserOTPForm(request.POST)
