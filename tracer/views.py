@@ -26,8 +26,7 @@ def close_contact(request):
         positive_id = request.POST.get("pos_id", None)
         close_contact_instances = CloseContact.objects.filter(
             positivecase_id=positive_id
-        )
-
+        ).filter(status=1)
         num_contact = close_contact_instances.count()
         if not close_contact_instances:
             return render(
@@ -41,7 +40,7 @@ def close_contact(request):
         user = request.user.id
         contact_list = CloseContact.objects.filter(positivecase_id=positive_id).filter(
             staff_id=user
-        )
+        ).filter(status=1)
         template = loader.get_template("tracer/contacts_info.html")
         contact_list_dict = {}
         for contact in contact_list:
@@ -99,7 +98,7 @@ def find_contact(request):
         user = request.user.id
         contacts = CloseContact.objects.filter(identity_id=identity.id).filter(
             staff_id=user
-        )
+        ).filter(status=1)
         if not contacts:
             return render(
                 request,
@@ -140,3 +139,91 @@ def find_contact(request):
 def individual_info(context, request):
     template = loader.get_template("tracer/individual_info.html")
     return HttpResponse(template.render(context, request))
+
+@verified_user
+@tracer_only
+def individual_detail(request, nric=""):
+    template = loader.get_template("tracer/individual_info.html")
+    nric_num = nric
+    identity_instance = Identity.objects.filter(nric=nric_num)
+    if not identity_instance:
+        return render(
+            request,
+            "tracer/tracer_error_message.html",
+            {
+                "message": "The nric number is not recorded! Make sure all the credentials are correct."
+            },
+        )
+    else:
+        identity = identity_instance[0]
+    
+    contacts = CloseContact.objects.filter(identity_id=identity.id).filter(
+        staff_id=request.user.id
+    ).filter(status=1)
+    if not contacts:
+            return render(
+                request,
+                "tracer/tracer_error_message.html",
+                {
+                    "message": "You are not allowed to view the information of this NRIC holder or the holder is not a close contact."
+                },
+            )
+
+    contact_list_dict = {}
+    positive_id_arr = []
+
+    name = identity.fullname
+    phone_num = identity.phone_num
+    address = identity.address
+    for case in contacts:
+        positive_id_arr.append(case.positivecase_id)
+
+    contact_list_dict[0] = {
+        "name": name,
+        "nric": nric_num,
+        "phone_num": phone_num,
+        "address": address,
+        "positive_id_arr": positive_id_arr,
+    }
+    context = {
+        "contact_list_dict": contact_list_dict,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+@verified_user
+@tracer_only
+@csrf_protect
+def inactivate_contact(request, message=""):
+    if request.method == "POST":
+        nric_num = request.POST.get("nric", None)
+        identity_instance = Identity.objects.filter(nric=nric_num)
+        if not identity_instance:
+            return render(
+                request,
+                "tracer/tracer_error_message.html",
+                {
+                    "message": "The nric number is not recorded! Make sure all the credentials are correct."
+                },
+            )
+        identity = identity_instance[0].id
+        
+        contacts = CloseContact.objects.filter(identity_id=identity).filter(
+            staff_id=request.user.id
+        ).filter(status=1)
+        if not contacts:
+            return render(
+                request,
+                "tracer/tracer_error_message.html",
+                {
+                    "message": "You are not allowed to inactivate this NRIC holder or the holder is not an activate close contact."
+                },
+            )
+        else:
+            for contact in contacts:
+                contact.status = 0
+                contact.save()
+        message = "You have insctivated this close contacts successfully!"
+        return render(request, "tracer/inactivate_contact.html", {"message" : message})
+    else:
+        return render(request, "tracer/inactivate_contact.html")

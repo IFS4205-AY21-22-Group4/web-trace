@@ -101,7 +101,8 @@ class CloseContact(models.Model):
     positivecase = models.ForeignKey(PositiveCases, on_delete=models.CASCADE)
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
     cluster = models.ForeignKey(Cluster, on_delete=models.CASCADE)
-
+    status = models.BooleanField(default=True)
+    
     def __str__(self):
         return "id: %s, identity_id: %s, positivecase: %s, staff_id: %s" % (
             self.id,

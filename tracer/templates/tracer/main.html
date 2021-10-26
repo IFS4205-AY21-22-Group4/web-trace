@@ -33,13 +33,18 @@
 
     <div class="container-fluid">
         {% block content %}
-
-
-        <div>
-            <p> Hi, </p> 
+        <div align="center" style="font-size:20px">
+            <p> Welcome to the tracer interface!</p> 
         </div>
-
-
+        <div align="center">
+            <p>You can find close contacs information here: <a href="{% url 'tracer:close_contact' %}">Find close contacts</a> </p> 
+        </div>
+        <div align="center">
+            <p>You can find information of an individual close contact here: <a href="{% url 'tracer:find_contact' %}">Find individual contact</a> </p> 
+        </div>
+        <div align="center">
+            <p>You can inactivate a close contact here: <a href="{% url 'tracer:inactivate_contact' %}">Inactivate close contact</a> </p> 
+        </div>
         {% endblock %}
     </div>
 

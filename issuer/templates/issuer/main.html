@@ -33,11 +33,15 @@
 
     <div class="container-fluid">
         {% block content %}
-
-        <div>
-            <p> Hi, </p> 
-        </div>       
-
+        <div align="center" style="font-size:20px">
+            <p> Welcome to the issuer interface!</p> 
+        </div>
+        <div align="center">
+            <p>You can issue a token here: <a href="{% url 'issuer:issue_token' %}">Issue a token</a> </p> 
+        </div>
+        <div align="center">
+            <p>You can inactivate a token here: <a href="{% url 'issuer:inactivate_token' %}">Inactivate a token</a> </p> 
+        </div>
         {% endblock %}
     </div>
 
