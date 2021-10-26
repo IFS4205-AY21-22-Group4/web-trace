@@ -142,3 +142,4 @@ cython_debug/
 official/migrations/*.py
 Staff_Accounts/migrations/*.py
 issuer/migrations/*.py
+config/settings.py

@@ -26,9 +26,12 @@ from Staff_Accounts.helpers.wrappers import (
     unauthenticated_user,
     unverified_user,
     verified_user,
+    official_only,
 )
 
-# @verified_user
+
+@verified_user
+@official_only
 def index(request):
     cluster_list = Cluster.objects.filter(status=True).order_by("id")
     template = loader.get_template("official/index.html")
@@ -46,7 +49,8 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-# @verified_user
+@verified_user
+@official_only
 def detail(request, cluster_id):
     cluster = get_object_or_404(Cluster, pk=cluster_id)
     cases = cluster.positivecases_set.filter(is_recovered=False)
@@ -63,12 +67,11 @@ def detail(request, cluster_id):
     return HttpResponse(template.render(context, request))
 
 
-# @verified_user
+@verified_user
+@official_only
 @csrf_protect
 def insert(request):
     staffs = list(Staff.objects.filter(user__groups__name="Contact Tracers"))
-    # print(staffs)
-    print("hello")
     # print(request.user.email)
     clusters = Cluster.objects.filter(status=True)
     case_num = PositiveCases.objects.count() + 1
@@ -208,7 +211,8 @@ def insert(request):
     return HttpResponse(template.render(context, request))
 
 
-# @verified_user
+@verified_user
+@official_only
 @csrf_protect
 def update(request):
     template = loader.get_template("official/update.html")
@@ -230,7 +234,9 @@ def update(request):
     return HttpResponse(template.render(context, request))
 
 
-# @verified_user
+@verified_user
+@official_only
+@csrf_protect
 def confirm(request, positivecase_id):
     template = loader.get_template("official/confirm.html")
     case = PositiveCases.objects.get(id=positivecase_id)
@@ -261,7 +267,9 @@ def confirm(request, positivecase_id):
     return HttpResponse(template.render(context, request))
 
 
-# @verified_user
+@verified_user
+@official_only
+@csrf_protect
 def edit(request, positivecase_id):
     staffs = Staff.objects.all()
     clusters = Cluster.objects.filter(status=True)
@@ -318,7 +326,9 @@ def edit(request, positivecase_id):
     return HttpResponse(template.render(context, request))
 
 
-# @verified_user
+@verified_user
+@official_only
+@csrf_protect
 def assign(request):
     template = loader.get_template("official/assign.html")
     if request.method == "POST":
@@ -343,12 +353,16 @@ def assign(request):
     return HttpResponse(template.render(context, request))
 
 
+@verified_user
+@official_only
 def success(request):
     template = loader.get_template("official/success.html")
     context = {}
     return HttpResponse(template.render(context, request))
 
 
+@verified_user
+@official_only
 def showcontact(request, positivecase_id):
     template = loader.get_template("official/showcontact.html")
     close_contacts_id = request.session["close_contacts_id" + str(positivecase_id)]
@@ -360,6 +374,8 @@ def showcontact(request, positivecase_id):
     return HttpResponse(template.render(context, request))
 
 
+@verified_user
+@official_only
 def error(request, message):
     template = loader.get_template("official/error.html")
     context = {"message": message}

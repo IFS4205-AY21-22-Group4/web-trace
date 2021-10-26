@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% extends 'accounts/main.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,3 +14,4 @@ Invalid action:<br/>
 <div><a href="{% url 'official:update' %}">Click here to update an existing positive case</a></div>
 </body>
 </html>
+{% endblock %}

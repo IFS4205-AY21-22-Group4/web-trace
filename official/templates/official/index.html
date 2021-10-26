@@ -1,11 +1,13 @@
 <!DOCTYPE html>
+{% extends 'accounts/main.html' %}
+{% block content %}
 <html>
   <head>
     <meta charset="utf-8">
     <title>List of active clusters</title>
   </head>
   <body>
-<div><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/><br/></div>
+<div><br/><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/><br/></div>
 <div><a href="{% url 'official:update' %}">Click here to update a new positive case</a><br/><br/></div>
 <div><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/><br/></div>
 {% if cluster_number_dict %}
@@ -16,7 +18,7 @@
         <p>Cluster name: {{cluster.name}}</p>
         <p>Number of positive cases: {{value.cases_count}}</p>
         <p>Number of close contacts: {{value.contacts_count}}</p>
-        <a href="{% url 'official:detail' cluster.id %}">Click here for details of cluster {{cluster.id}}</a>
+        <a href="{% url 'official:detail' cluster.id %}">Click here for details of cluster {{cluster.id}}</a><br/><br/>
     {% endfor %}
     </ul>
 {% else %}
@@ -24,3 +26,4 @@
 {% endif %}
   </body>
 </html>
+{% endblock %}

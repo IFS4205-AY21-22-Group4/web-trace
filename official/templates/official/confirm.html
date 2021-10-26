@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% extends 'accounts/main.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +31,8 @@
 {% endif %}
 <input type="submit" value="Submit">
 </form>
-<p><a href="{% url 'official:update' %}">Click here to go back to choose another positive case</a></p>
-<div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
+<p><br/><a href="{% url 'official:update' %}">Click here to go back to choose another positive case</a></p>
+<div><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 </body>
 </html>
+{% endblock %}

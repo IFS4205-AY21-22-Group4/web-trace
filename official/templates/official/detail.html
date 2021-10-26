@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% extends 'accounts/main.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,9 +14,8 @@
 <div><a href="{% url 'official:update' %}">Click here to update a new positive case</a><br/><br/></div>
 <div><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/><br/></div>
 <h3>Number of positive cases: {{cases.count}}</h3>
-<p>List of positive cases:</p>
-
 <div id="container"></div>
+<p>List of positive cases:</p>
 <script src="https://code.highcharts.com/highcharts.src.js"></script>
 <script src="https://code.highcharts.com/modules/networkgraph.js"></script>
 <script>
@@ -105,3 +106,4 @@ Highcharts.chart('container', {
 </ol>
 </body>
 </html>
+{% endblock %}

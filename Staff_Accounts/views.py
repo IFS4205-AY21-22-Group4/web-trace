@@ -16,6 +16,8 @@ from Staff_Accounts.helpers.forms import (
     CreateUserOTPForm,
 )
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from Staff_Accounts.helpers import crypto
 from Staff_Accounts.helpers.validate import (
     sendOTP,
@@ -167,7 +169,7 @@ def home(request):
     if group == "Administrators":
         return render(request, "accounts/admin.html")
     elif group == "Officials":
-        return render(request, "accounts/official.html")
+        return HttpResponseRedirect(reverse("official:index"))
     elif group == "Contact Tracers":
         return render(request, "accounts/tracer.html")
     elif group == "Token Issuers":

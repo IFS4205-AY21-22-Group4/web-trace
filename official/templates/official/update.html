@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% extends 'accounts/main.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,3 +16,4 @@
 <div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 </body>
 </html>
+{% endblock %}
