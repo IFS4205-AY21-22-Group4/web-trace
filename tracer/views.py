@@ -38,9 +38,11 @@ def close_contact(request):
             )
 
         user = request.user.id
-        contact_list = CloseContact.objects.filter(positivecase_id=positive_id).filter(
-            staff_id=user
-        ).filter(status=1)
+        contact_list = (
+            CloseContact.objects.filter(positivecase_id=positive_id)
+            .filter(staff_id=user)
+            .filter(status=1)
+        )
         template = loader.get_template("tracer/contacts_info.html")
         contact_list_dict = {}
         for contact in contact_list:
@@ -96,9 +98,11 @@ def find_contact(request):
 
         identity = Identity.objects.filter(nric=nric_num)[0]
         user = request.user.id
-        contacts = CloseContact.objects.filter(identity_id=identity.id).filter(
-            staff_id=user
-        ).filter(status=1)
+        contacts = (
+            CloseContact.objects.filter(identity_id=identity.id)
+            .filter(staff_id=user)
+            .filter(status=1)
+        )
         if not contacts:
             return render(
                 request,
@@ -140,6 +144,7 @@ def individual_info(context, request):
     template = loader.get_template("tracer/individual_info.html")
     return HttpResponse(template.render(context, request))
 
+
 @verified_user
 @tracer_only
 def individual_detail(request, nric=""):
@@ -156,18 +161,20 @@ def individual_detail(request, nric=""):
         )
     else:
         identity = identity_instance[0]
-    
-    contacts = CloseContact.objects.filter(identity_id=identity.id).filter(
-        staff_id=request.user.id
-    ).filter(status=1)
+
+    contacts = (
+        CloseContact.objects.filter(identity_id=identity.id)
+        .filter(staff_id=request.user.id)
+        .filter(status=1)
+    )
     if not contacts:
-            return render(
-                request,
-                "tracer/tracer_error_message.html",
-                {
-                    "message": "You are not allowed to view the information of this NRIC holder or the holder is not a close contact."
-                },
-            )
+        return render(
+            request,
+            "tracer/tracer_error_message.html",
+            {
+                "message": "You are not allowed to view the information of this NRIC holder or the holder is not a close contact."
+            },
+        )
 
     contact_list_dict = {}
     positive_id_arr = []
@@ -207,10 +214,12 @@ def inactivate_contact(request, message=""):
                 },
             )
         identity = identity_instance[0].id
-        
-        contacts = CloseContact.objects.filter(identity_id=identity).filter(
-            staff_id=request.user.id
-        ).filter(status=1)
+
+        contacts = (
+            CloseContact.objects.filter(identity_id=identity)
+            .filter(staff_id=request.user.id)
+            .filter(status=1)
+        )
         if not contacts:
             return render(
                 request,
@@ -224,6 +233,6 @@ def inactivate_contact(request, message=""):
                 contact.status = 0
                 contact.save()
         message = "You have insctivated this close contacts successfully!"
-        return render(request, "tracer/inactivate_contact.html", {"message" : message})
+        return render(request, "tracer/inactivate_contact.html", {"message": message})
     else:
         return render(request, "tracer/inactivate_contact.html")

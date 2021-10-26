@@ -57,5 +57,6 @@ class CloseContact(models.Model):
         Cluster, on_delete=models.CASCADE, blank=True, null=True
     )
     status = models.BooleanField(default=True)
+
     class Meta:
         db_table = "closecontact"

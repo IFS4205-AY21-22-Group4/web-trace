@@ -6,53 +6,53 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('official', '0010_alter_positivecases_cluster'),
+        ("official", "0010_alter_positivecases_cluster"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='closecontact',
-            options={'managed': True},
+            name="closecontact",
+            options={"managed": True},
         ),
         migrations.AlterModelOptions(
-            name='cluster',
-            options={'managed': True},
+            name="cluster",
+            options={"managed": True},
         ),
         migrations.AlterModelOptions(
-            name='edge',
-            options={'managed': True},
+            name="edge",
+            options={"managed": True},
         ),
         migrations.AlterModelOptions(
-            name='gateway',
-            options={'managed': True},
+            name="gateway",
+            options={"managed": True},
         ),
         migrations.AlterModelOptions(
-            name='gatewayrecord',
-            options={'managed': True},
+            name="gatewayrecord",
+            options={"managed": True},
         ),
         migrations.AlterModelOptions(
-            name='identity',
-            options={'managed': True},
+            name="identity",
+            options={"managed": True},
         ),
         migrations.AlterModelOptions(
-            name='positivecases',
-            options={'managed': True},
+            name="positivecases",
+            options={"managed": True},
         ),
         migrations.AlterModelOptions(
-            name='role',
-            options={'managed': True},
+            name="role",
+            options={"managed": True},
         ),
         migrations.AlterModelOptions(
-            name='staff',
-            options={'managed': True},
+            name="staff",
+            options={"managed": True},
         ),
         migrations.AlterModelOptions(
-            name='token',
-            options={'managed': True},
+            name="token",
+            options={"managed": True},
         ),
         migrations.AddField(
-            model_name='closecontact',
-            name='status',
+            model_name="closecontact",
+            name="status",
             field=models.BooleanField(default=True),
         ),
     ]
