@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from Staff_Accounts.models import Staff, User, UserManager
 from Staff_Accounts.helpers.wrappers import issuer_only, verified_user
+from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 @verified_user
@@ -21,13 +22,11 @@ def index(request):
 @issuer_only
 def issue_token(request, message=""):
     if request.method == "POST":
-
         serial = request.POST.get("serial", None)
         nric_num = request.POST.get("nric", None)
         pin = request.POST.get("pin", None)
         if pin is not None:
-            pin = pin.encode("utf-8")
-            h_pin = hashlib.sha256(pin).hexdigest()
+            h_pin=make_password(pin)
         else:
             h_pin = None
 

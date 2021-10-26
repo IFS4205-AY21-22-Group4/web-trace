@@ -32,7 +32,7 @@ class Token(models.Model):
     owner = models.ForeignKey(Identity, on_delete=models.PROTECT)
     issuer = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL)
     status = models.BooleanField(default=True)
-    hashed_pin = models.CharField(max_length=64)
+    hashed_pin = models.CharField(max_length=128)
 
     class Meta:
         db_table = "token"
