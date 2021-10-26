@@ -7,8 +7,48 @@
 <body>
 <h1>Cluster {{cluster.id}}</h1>
 <p>Cluster name: {{cluster.name}}</p>
+<div><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/><br/></div>
+<div><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/><br/></div>
+<div><a href="{% url 'official:update' %}">Click here to update a new positive case</a><br/><br/></div>
+<div><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/><br/></div>
 <h3>Number of positive cases: {{cases.count}}</h3>
 <p>List of positive cases:</p>
+
+<div id="container"></div>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<script src="https://code.highcharts.com/modules/networkgraph.js"></script>
+<script>
+Highcharts.chart('container', {
+  chart: {
+    type: 'networkgraph',
+    marginTop: 80
+  },
+  title: {
+    text: 'Graph for cluster ' + {{cluster.id}}
+  },
+  plotOptions: {
+    networkgraph: {
+      keys: ['from', 'to'],
+    }
+  },
+  series: [{
+    marker: {
+      radius: 10
+    },
+    dataLabels: {
+      enabled: true,
+      linkFormat: '',
+      allowOverlap: true
+    },
+    data: [
+      {% for link in links %}
+      [{{link.vertex1_id}}, {{link.vertex2_id}}],
+      {% if not forloop.last %}, {% endif %}{% endfor %}
+    ]
+  }]
+});
+</script>
+
 <ol>
 {% for case in cases %}
     <li>
@@ -63,6 +103,5 @@
     </li>
 {% endfor %}
 </ol>
-
 </body>
 </html>

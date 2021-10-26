@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New close contacts are added to the database</title>
+</head>
+<body>
+<h3>These close contacts have been added to the database:</h3>
+{% if positivecase.cluster != None %}
+    Cluster {{positivecase.cluster.id}}<br/>
+    Cluster Name: {{positivecase.cluster.name}}<br/>
+{% else %}
+    No cluster for these close contacts.
+{% endif %}
+<div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
+<div><br/><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/></div>
+<div><br/><a href="{% url 'official:update' %}">Click here to update an existing positive case</a><br/></div>
+<div><br/><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/></div>
+<ol>
+{% for contact in close_contacts %}
+    <li>
+        <p>
+            Close contact ID: {{contact.id}}<br/>
+            NRIC: {{contact.identity.nric}}<br/>
+            Positive case related:<br/>
+            &nbsp;&nbsp;ID: {{contact.positivecase.id}}<br/>
+            &nbsp;&nbsp;NRIC: {{contact.positivecase.identity.nric}}<br/>
+            &nbsp;&nbsp;Date test positive: {{contact.positivecase.date_test_positive}}<br/>
+            {% if contact.staff != None %}
+                &nbsp;&nbsp;Staff assigned: {{contact.staff}}<br/>
+            {% else %}
+                &nbsp;&nbsp;No staff is assigned.<br/>
+            {% endif %}
+        </p>
+    </li>
+{% endfor %}
+</ol>
+</body>
+</html>

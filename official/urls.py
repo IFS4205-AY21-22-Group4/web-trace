@@ -9,8 +9,10 @@ urlpatterns = [
     path("insert/", views.insert, name="insert"),
     path("update/", views.update, name="update"),
     path("assign/", views.assign, name="assign"),
-    path("edit/<int:positivecase_id>/<change_dict>", views.edit, name="edit"),
+    path("edit/<int:positivecase_id>/", views.edit, name="edit"),
     path("success/", views.success, name="success"),
     path("confirm/<int:positivecase_id>/", views.confirm, name="confirm"),
     path("error/<message>/", views.error, name="error"),
+    path("showcontact/<int:positivecase_id>", views.showcontact, name="showcontact"),
+    path("assign/", views.assign, name="assign"),
 ]
