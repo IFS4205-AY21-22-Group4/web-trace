@@ -2,9 +2,16 @@ from django.contrib.auth import logout
 from Staff_Accounts.models import Staff
 from django.http import HttpResponse
 from django.shortcuts import redirect
+import logging
+
+from config.settings import DB
+
+db_logger = logging.getLogger(DB)
 
 # Check if user is unauthenticated
 def unauthenticated_user(view_func):
+    db_logger.info("wrapper_unauthenticated_user")
+
     def unauthenticated_wrapper_func(request, *args, **kwargs):
         if request.user.is_authenticated:
             try:
@@ -14,6 +21,9 @@ def unauthenticated_user(view_func):
             if user.is_verified:
                 return redirect("home")
             logout(request)
+            db_logger.warning(
+                "wrapper_unauthenticated_user: User was logged in but not verified"
+            )
             return view_func(request, *args, **kwargs)
         else:
             return view_func(request, *args, **kwargs)
@@ -23,6 +33,8 @@ def unauthenticated_user(view_func):
 
 # Check if user has logged in with the OTP
 def verified_user(view_func):
+    db_logger.info("wrapper_verified_user")
+
     def verified_wrapper_function(request, *args, **kwargs):
         if request.user.is_authenticated:
             try:
@@ -40,6 +52,8 @@ def verified_user(view_func):
 
 # Check if user has logged in without the OTP
 def unverified_user(view_func):
+    db_logger.info("wrapper_unverified_user")
+
     def wrapper_function(request, *args, **kwargs):
         if request.user.is_authenticated:
             try:
@@ -59,6 +73,8 @@ def unverified_user(view_func):
 
 # Check whether specified user is allowed to access view
 def allowed_users(allowed_roles=[]):
+    db_logger.info("decorator_allowed_user")
+
     def decorator(view_func):
         def wrapper_func(request, *args, **kwargs):
 
@@ -78,6 +94,8 @@ def allowed_users(allowed_roles=[]):
 
 # Check whether user is admin
 def admin_only(view_func):
+    db_logger.info("wrapper_admin_user")
+
     def admin_wrapper_function(request, *args, **kwargs):
         group = None
         if request.user.groups.exists():
@@ -93,6 +111,8 @@ def admin_only(view_func):
 
 # Check whether user is official
 def official_only(view_func):
+    db_logger.info("wrapper_official_user")
+
     def official_wrapper_function(request, *args, **kwargs):
         group = None
         if request.user.groups.exists():
@@ -108,6 +128,8 @@ def official_only(view_func):
 
 # Check whether user is tracer
 def tracer_only(view_func):
+    db_logger.info("wrapper_tracer_user")
+
     def tracer_wrapper_function(request, *args, **kwargs):
         group = None
         if request.user.groups.exists():
@@ -123,6 +145,8 @@ def tracer_only(view_func):
 
 # Check whether user is issuer
 def issuer_only(view_func):
+    db_logger.info("wrapper_issuer_user")
+
     def issuer_wrapper_function(request, *args, **kwargs):
         group = None
         if request.user.groups.exists():
