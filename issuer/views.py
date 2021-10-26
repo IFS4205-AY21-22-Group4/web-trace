@@ -26,7 +26,7 @@ def issue_token(request, message=""):
         nric_num = request.POST.get("nric", None)
         pin = request.POST.get("pin", None)
         if pin is not None:
-            h_pin=make_password(pin)
+            h_pin = make_password(pin)
         else:
             h_pin = None
 
