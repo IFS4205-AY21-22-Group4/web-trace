@@ -7,4 +7,4 @@ sqlparse==0.4.1
 pymysql==1.0.2
 django-axes==5.26.0
 django-rest-knox==4.1.0
-
+django-db-logger

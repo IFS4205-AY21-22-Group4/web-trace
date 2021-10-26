@@ -42,8 +42,9 @@ INSTALLED_APPS = [
     "issuer",
     "tracer",
     "official.apps.OfficialConfig",
-    "Staff_Accounts",
+    "Staff_Accounts.apps.StaffAccountsConfig",
     "axes",
+    "django_db_logger",
 ]
 
 MIDDLEWARE = [
@@ -85,18 +86,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        # "NAME": "capstone",
-        # "USER": "root",
-        # "PASSWORD": "Ljw20010812",
-        # "HOST": "127.0.0.1",
-        # "PORT": "3306",
         "NAME": "pandemic_project",
         "USER": "mariadb",
         "PASSWORD": "mariadb",
         "DEFAULT_CHARSET": "utf-8",
         "HOST": "127.0.0.1",
         "PORT": "3306",
-        "TEST": {"NAME": "pandemic_project"},
     }
 }
 
@@ -148,12 +143,30 @@ AUTH_USER_MODEL = "Staff_Accounts.User"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
-EMAIL_HOST_PASSWORD = '+&3ccs"*V8tUcV/n'  # hide this afterwards
+EMAIL_HOST_PASSWORD = "fupywhzsdgeewhjj"  # hide this afterwards
 EMAIL_USE_TLS = True
 
 SILENCED_SYSTEM_CHECKS = ["axes.W003"]
 AXES_ENABLED = True
 AXES_LOGIN_FAILURE_LIMIT = 3
-AXES_COOLOFF_TIME = 0
+AXES_COOLOFF_TIME = 24
 ATOMIC_REQUESTS = False
 AXES_LOCK_OUT_BY_USER_OR_IP = True
+DB = ""
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+        },
+        "simple": {"format": "%(levelname)s %(asctime)s %(message)s"},
+    },
+    "handlers": {
+        "db_log": {
+            "level": "DEBUG",
+            "class": "django_db_logger.db_log_handler.DatabaseLogHandler",
+        },
+    },
+    "loggers": {"db": {"handlers": ["db_log"], "level": "DEBUG"}},
+}
