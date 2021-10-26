@@ -1,8 +1,9 @@
 from django.db.models import base
 from django.shortcuts import render, get_object_or_404
 from django import forms
-#from tracer import models
-#from .models import Identity, CloseContact
+
+# from tracer import models
+# from .models import Identity, CloseContact
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
@@ -11,6 +12,7 @@ from Staff_Accounts.models import Staff, User, UserManager
 from issuer.models import Token, MedicalRecord, Identity
 from Staff_Accounts.helpers.wrappers import tracer_only, verified_user
 from official.models import Cluster, PositiveCases, CloseContact
+
 # Create your views here.
 @verified_user
 @tracer_only

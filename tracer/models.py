@@ -14,5 +14,3 @@ from knox.models import AuthToken
 from Staff_Accounts.models import Staff, User, UserManager
 from issuer.models import Token, MedicalRecord, Identity
 from official.models import Cluster, PositiveCases, CloseContact
-
-

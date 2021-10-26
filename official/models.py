@@ -64,7 +64,6 @@ class PositiveCases(models.Model):
         managed = True
 
 
-
 class CloseContact(models.Model):
     id = models.BigAutoField(primary_key=True)
     identity = models.ForeignKey(Identity, on_delete=models.PROTECT)
@@ -78,7 +77,6 @@ class CloseContact(models.Model):
     class Meta:
         db_table = "closecontact"
         managed = True
-
 
 
 class Edge(models.Model):
