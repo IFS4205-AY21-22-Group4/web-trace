@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db import connection
 from Staff_Accounts.models import Staff
 from django.test import TestCase
 
