@@ -13,16 +13,17 @@ RUN mkdir -p $SERVICE/static
 # Set work directory
 WORKDIR $SERVICE
 
-# Install necessary packages
-RUN apt-get install -y libmariadb-dev
-
 # Set python environment variables
 ENV PYTHONUNBUFFERED=1
+
+# Install necessary packages
+RUN apt-get install -y libmariadb-dev
 
 # Install dependencies
 RUN pip install --upgrade pip
 COPY . $SERVICE
 RUN pip install -r requirements.txt
 
-COPY . /code/
-RUN pip install pymysql
+# Run as unprivileged
+RUN chown -R web-trace:web-trace $SERVICE
+USER web-trace
