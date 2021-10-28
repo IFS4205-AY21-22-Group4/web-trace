@@ -45,8 +45,8 @@ class Cluster(models.Model):
         db_table = "cluster"
         managed = True
 
-    class Meta:
-        managed = True
+    def __str__(self):
+        return "Cluster " + str(self.id) + ": " + str(self.name)
 
 
 class PositiveCases(models.Model):
@@ -77,6 +77,9 @@ class CloseContact(models.Model):
     class Meta:
         db_table = "closecontact"
         managed = True
+
+    def __str__(self):
+        return str(self.id)
 
 
 class Edge(models.Model):

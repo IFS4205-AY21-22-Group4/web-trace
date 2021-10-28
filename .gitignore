@@ -139,5 +139,6 @@ dmypy.json
 cython_debug/
 
 # Migrations
-official/migrations/*
-Staff_Accounts/migrations/*
+official/migrations/*.py
+Staff_Accounts/migrations/*.py
+issuer/migrations/*.py
