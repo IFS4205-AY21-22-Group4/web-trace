@@ -87,7 +87,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "pandemic_project",
-        "USER": "root",
+        "USER": "mariadb",
         "PASSWORD": "mariadb",
         "DEFAULT_CHARSET": "utf-8",
         "HOST": "127.0.0.1",
