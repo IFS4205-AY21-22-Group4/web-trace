@@ -4,7 +4,7 @@ LABEL maintainer="isabharon@gmail.com"
 
 # Create user and group
 ENV SERVICE=/home/app/web-trace
-RUN addgroup --system web-trace && adduser --system web-trace --group
+RUN useradd -m web-trace
 
 # Create app directories
 RUN mkdir -p $SERVICE
@@ -19,11 +19,13 @@ ENV PYTHONUNBUFFERED=1
 # Install necessary packages
 RUN apt-get install -y libmariadb-dev
 
-# Install dependencies
-RUN pip install --upgrade pip
 COPY . $SERVICE
-RUN pip install -r requirements.txt
+RUN chown -R web-trace:web-trace $SERVICE
 
 # Run as unprivileged
-RUN chown -R web-trace:web-trace $SERVICE
 USER web-trace
+ENV PATH="/home/web-trace/.local/bin:${PATH}"
+
+# Install dependencies
+RUN pip install --upgrade pip --user
+RUN pip install -r requirements.txt --user
