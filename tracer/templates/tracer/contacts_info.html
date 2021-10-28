@@ -78,15 +78,19 @@
         You are viewing close contacts information.
     </div>
     {% if contact_list_dict %}
-    <h1>List of close contacts</h1>
+    <div style="font-size:30px">
+        List of close contacts
+    </div>
     <ul>
     {% for contact, value in contact_list_dict.items %}
         <li><p>Close contact {{contact.id}}</p></li>
-        <!--li><p>Close contact</p></li-->
-        <p>Fullname: {{value.name}}</p>
+        <p>Nric number: {{value.nric}}</p>
+        <a href="{% url 'tracer:individual_detail' value.nric %}"> Find individual detail information</a></p>
+
+        <!--p>Fullname: {{value.name}}</p>
         <p>Nric number: {{value.nric}}</p>
         <p>Phone number: {{value.phone_num}}</p>
-        <p>Address: {{value.address}}</p>
+        <p>Address: {{value.address}}</p-->
     {% endfor %}
     </ul>
 {% else %}
@@ -95,6 +99,7 @@
 <button type="button" name="gohome" onclick="window.location.href = '/tracer'">Home</button>
 <button type="button" name="findcontact" onclick="window.location.href = '/tracer/close_contact'">Find contacts</button>
 <button type="button" name="find_contact" onclick="window.location.href = '/tracer/find_contact'">Find individual contact</button>
+<button type="button" name="inact_contact" onclick="window.location.href = '/tracer/inactivate_contact'">Inactivate close contact</button>
 </body>
 </html>
 

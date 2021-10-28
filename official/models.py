@@ -68,10 +68,11 @@ class CloseContact(models.Model):
     id = models.BigAutoField(primary_key=True)
     identity = models.ForeignKey(Identity, on_delete=models.PROTECT)
     positivecase = models.ForeignKey(PositiveCases, on_delete=models.CASCADE)
-    staff = models.ForeignKey(Staff, on_delete=models.DO_NOTHING, blank=True, null=True)
+    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     cluster = models.ForeignKey(
         Cluster, on_delete=models.CASCADE, blank=True, null=True
     )
+    status = models.BooleanField(default=True)
 
     class Meta:
         db_table = "closecontact"
