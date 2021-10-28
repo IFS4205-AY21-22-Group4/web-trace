@@ -49,15 +49,9 @@ def close_contact(request):
         contact_list_dict = {}
         for contact in contact_list:
             identity = Identity.objects.get(id=contact.identity_id)
-            name = identity.fullname
             nric = identity.nric
-            phone_num = identity.phone_num
-            address = identity.address
             contact_list_dict[contact] = {
-                "name": name,
                 "nric": nric,
-                "phone_num": phone_num,
-                "address": address,
             }
         context = {
             "contact_list_dict": contact_list_dict,
