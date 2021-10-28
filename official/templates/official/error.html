@@ -5,7 +5,10 @@
     <title>Error</title>
 </head>
 <body>
+Invalid action:<br/>
 {{message}}
-<a href="{% url 'official:index' %}">Go back to official homepage.</a>
+<div><a href="{% url 'official:index' %}">Click here to go back to official homepage</a></div>
+<div><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a></div>
+<div><a href="{% url 'official:update' %}">Click here to update an existing positive case</a></div>
 </body>
 </html>

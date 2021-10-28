@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update positive case</title>
+    <title>Assign a case cluster to a staff</title>
 </head>
 <body>
-<h1>Enter the NRIC of the positive case you want to update:</h1>
-<form action="{% url 'official:update' %}" method="post">
+<form action="{% url 'official:assign' %}" method="post">
+{% autoescape on %}
 {% csrf_token %}
-{{form.as_p}}
-<input type="submit" value="Submit">
+    {{form.as_p}}
+    <input type="submit" value="Submit">
+{% endautoescape %}
 </form>
 <div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 </body>

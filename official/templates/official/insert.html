@@ -21,7 +21,11 @@
 </p></div>
 {% endfor %}
 <input type="submit" value="Submit">
-{% endautoescape %}
 </form>
+<div>
+    <br/>By clicking the "submit" button, all the close contacts related to the positive case will be added to the database.<br/>
+    {% endautoescape %}
+</div>
+<div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 </body>
 </html>

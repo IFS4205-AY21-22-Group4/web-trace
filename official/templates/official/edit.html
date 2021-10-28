@@ -6,8 +6,25 @@
 </head>
 <body>
 <h1>Change the details of the positive case:</h1>
-<form action="{% url 'official:edit'  %}" method="post">
-    {{form.as_p}}
+<p>NRIC: {{case.identity.nric}}</p>
+<form action="{% url 'official:edit' positivecase_id %}" method="post">
+{% autoescape on %}
+{% csrf_token %}
+    {% if change_dict.date_test_positive_change %}
+        <p>{{form.date_test_positive.label}}: {{form.date_test_positive}}</p>
+    {% endif %}
+    {% if change_dict.is_recovered_change %}
+        <p>{{form.is_recovered.label}}: {{form.is_recovered}}</p>
+    {% endif %}
+    {% if change_dict.staff_change %}
+        <p>{{form.staff.label}}: {{form.staff}}</p>
+    {% endif %}
+    {% if change_dict.cluster_change %}
+        <p>{{form.cluster.label}}: {{form.cluster}}</p>
+    {% endif %}
+<input type="submit" value="Submit">
+{% endautoescape %}
 </form>
+<div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 </body>
 </html>
