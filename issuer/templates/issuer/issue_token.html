@@ -6,7 +6,7 @@
     <script language="javascript">
     <!--
     function test(form) { 
-        if (test_token(form) && test_checknric(form) && test_checkpin(form)) {
+        if (test_token(form) && test_nric(form) && test_checknric(form) && test_checkpin(form)) {
             return true;
         }
         return false;
@@ -21,7 +21,7 @@
             var re = /[0-9a-f]{12}/g;
             str = mac.replace(/:/g, "");
             if (!(re.test(str))) {
-                alert(str + "Invalid token name!");
+                alert("Invalid token MAC address!");
                 return false; 
             } else {
                 return true;
@@ -29,9 +29,25 @@
         }
     } 
     
+    function test_nric(form){
+        str = form.nric.value
+        if (!((str[0]>='A'&& str[0] <= 'Z') && (str[8]>='A'&&str[8]<='Z'))) {
+            alert("Invalid NRIC number!");
+            return false;
+        } else {
+            number = str.substr(1, 7);
+            var re = /[0-9]{7}/g;
+            if (!(re.test(number))) {
+                alert("Invalid NRIC number!");
+                return false; 
+            }
+        }
+        return true;
+    }
+
     function test_checknric(form){
         if (form.check_nric.value == ""){
-            alert("Please enter the nric number again!");
+            alert("Please enter the NRIC number again!");
             return false;
         } else if (form.check_nric.value != form.nric.value){
             alert("Different NRICs are entered! Please reset your NRIC!");
@@ -103,7 +119,7 @@
         
         <div align="center">
             <label for="pin_number">Set 6-digit Password (include at least one capital letter, one lowercase letter, and one number):</label>
-            <input type="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" name="pin" size="12" maxlength="6" id="pin_number" minlength="6" title="Please include at least 1 upperletter, 1 lowercase letter, and 1 number." required>  
+            <input type="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" name="pin" size="12" maxlength="6" id="pin_number" minlength="6" title="Please include at least 1 capital letter, 1 lowercase letter, and 1 number." required>  
         </div>
         
         <div align="center">

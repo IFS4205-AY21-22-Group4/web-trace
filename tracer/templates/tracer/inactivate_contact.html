@@ -6,16 +6,32 @@
     <script language="javascript">
         <!--
         function test(form) { 
-            if (test_checknric(form)){
+            if (test_nric(form) && test_checknric(form)){
                 return true;
             } else {
                 return false;
             }
         }
         
+        function test_nric(form){
+            str = form.nric.value
+            if (!((str[0]>='A'&& str[0] <= 'Z') && (str[8]>='A'&&str[8]<='Z'))) {
+                alert("Invalid NRIC number!");
+                return false;
+            } else {
+                number = str.substr(1, 7);
+                var re = /[0-9]{7}/g;
+                if (!(re.test(number))) {
+                    alert("Invalid NRIC number!");
+                    return false; 
+                }
+            }
+            return true;
+        }
+        
         function test_checknric(form){
             if (form.check_nric.value == ""){
-                alert("Please enter the nric number again!");
+                alert("Please enter the NRIC number again!");
                 return false;
             } else if (form.check_nric.value != form.nric.value){
                 alert("Different NRICs are entered!");
