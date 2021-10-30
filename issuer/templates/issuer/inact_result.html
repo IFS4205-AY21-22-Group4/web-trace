@@ -9,9 +9,8 @@
         {{message}}
     </div>
     <div align="center">
-    <button type="button" name="gohome" onclick="window.location.href = '/issuer'">Home</button>
-    <button type="button" name="issue_token" onclick="window.location.href = '/issuer/issue_token'">Issue Token</button>
-    <button type="button" name="inactivate_token" onclick="window.location.href = '/issuer/inactivate_token'">Inactive Token</button>
+        <p><a href="{% url 'issuer:issue_token' %}">Click here to issue a token</a></p>
+        <p></p><a href="{% url 'issuer:inactivate_token' %}">Click here to inactivate a token</a></p>
     </div>
 </body>
 </html>
