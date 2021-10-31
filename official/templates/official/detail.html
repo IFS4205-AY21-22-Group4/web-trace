@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+{% extends 'accounts/main.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Details of cluster {{cluster.id}}</title>
 </head>
+{% autoescape on %}
 <body>
 <h1>Cluster {{cluster.id}}</h1>
 <p>Cluster name: {{cluster.name}}</p>
@@ -11,10 +14,9 @@
 <div><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/><br/></div>
 <div><a href="{% url 'official:update' %}">Click here to update a new positive case</a><br/><br/></div>
 <div><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/><br/></div>
-<h3>Number of positive cases: {{cases.count}}</h3>
-<p>List of positive cases:</p>
-
+<div><a href="{% url 'official:add' %}">Click here to add a new case cluster</a><br/><br/></div>
 <div id="container"></div>
+<h3>Number of positive cases: {{cases.count}}</h3>
 <script src="https://code.highcharts.com/highcharts.src.js"></script>
 <script src="https://code.highcharts.com/modules/networkgraph.js"></script>
 <script>
@@ -42,8 +44,28 @@ Highcharts.chart('container', {
     },
     data: [
       {% for link in links %}
-      [{{link.vertex1_id}}, {{link.vertex2_id}}],
+      {% if link.0 == "positive" and link.1 == "positive" %}
+        ["positive".concat({{link.2.id}}), "positive".concat({{link.3.id}})],
+      {% elif link.0 == "positive" and link.1 == "contact" %}
+        ["positive".concat({{link.2.id}}), "contact".concat({{link.3.id}})],
+      {% elif link.0 == "contact" and link.1 == "positive" %}
+        ["contact".concat({{link.2.id}}), "positive".concat({{link.3.id}})],
+      {% endif %}
       {% if not forloop.last %}, {% endif %}{% endfor %}
+    ],
+    nodes: [
+      {% for case in cases %}
+      {
+        id: "positive".concat({{case.id}}),
+        color: "#E8544E"
+      },
+      {% endfor %}
+      {% for contact in contacts %}
+      {
+        id: "contact".concat({{contact.id}}),
+        color: "#87CEEB"
+      },
+      {% endfor %}
     ]
   }]
 });
@@ -54,7 +76,7 @@ Highcharts.chart('container', {
     <li>
         <p>
             Positive case id: {{case.id}}<br/>
-            Identity id: {{case.identity.id}}<br/>
+            NRIC: {{case.identity.nric}}<br/>
             Date tested positive: {{case.date_test_positive}}<br/>
             ID of assigned staff:
             {% if case.staff.id == None %}
@@ -73,7 +95,7 @@ Highcharts.chart('container', {
     <li>
         <p>
             Close contact id: {{contact.id}}<br/>
-            Identity id: {{contact.identity.id}}<br/>
+            NRIC: {{contact.identity.nric}}<br/>
             ID of positive case related: {{contact.positivecase.id}}<br/>
             ID of assigned staff:
             {% if contact.staff.id == None %}
@@ -90,18 +112,20 @@ Highcharts.chart('container', {
 <ol>
 {% for link in links %}
     <li>
-        {% if link.vertex1_category == 'positive' %}
-            Positive case ID {{link.vertex1_id}} -
+        {% if link.0 == 'positive' %}
+            Positive case ID {{link.2.id}} -
         {% else %}
-            Close contact ID {{link.vertex1_id}} -
+            Close contact ID {{link.2.id}} -
         {% endif %}
-        {% if link.vertex2_category == 'positive' %}
-            Positive case ID {{link.vertex2_id}}
+        {% if link.1 == 'positive' %}
+            Positive case ID {{link.3.id}}
         {% else %}
-            Close contact ID {{link.vertex2_id}}
+            Close contact ID {{link.3.id}}
         {% endif %}
     </li>
 {% endfor %}
 </ol>
 </body>
+{% endautoescape %}
 </html>
+{% endblock %}

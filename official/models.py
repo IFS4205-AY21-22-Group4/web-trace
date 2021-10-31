@@ -39,7 +39,7 @@ class GatewayRecord(models.Model):
 class Cluster(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    status = models.BooleanField()
+    status = models.BooleanField(default=True)
 
     class Meta:
         db_table = "cluster"
@@ -68,7 +68,7 @@ class CloseContact(models.Model):
     id = models.BigAutoField(primary_key=True)
     identity = models.ForeignKey(Identity, on_delete=models.PROTECT)
     positivecase = models.ForeignKey(PositiveCases, on_delete=models.CASCADE)
-    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
+    staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, blank=True, null=True)
     cluster = models.ForeignKey(
         Cluster, on_delete=models.CASCADE, blank=True, null=True
     )

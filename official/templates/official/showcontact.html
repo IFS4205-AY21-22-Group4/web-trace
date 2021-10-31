@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+{% extends 'accounts/main.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>New close contacts are added to the database</title>
 </head>
+{% autoescape on %}
 <body>
 <h3>These close contacts have been added to the database:</h3>
 {% if positivecase.cluster != None %}
@@ -16,24 +19,32 @@
 <div><br/><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/></div>
 <div><br/><a href="{% url 'official:update' %}">Click here to update an existing positive case</a><br/></div>
 <div><br/><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/></div>
+<div><br/><a href="{% url 'official:add' %}">Click here to add a new case cluster</a><br/></div>
+<br/>
 <ol>
-{% for contact in close_contacts %}
-    <li>
-        <p>
-            Close contact ID: {{contact.id}}<br/>
-            NRIC: {{contact.identity.nric}}<br/>
-            Positive case related:<br/>
-            &nbsp;&nbsp;ID: {{contact.positivecase.id}}<br/>
-            &nbsp;&nbsp;NRIC: {{contact.positivecase.identity.nric}}<br/>
-            &nbsp;&nbsp;Date test positive: {{contact.positivecase.date_test_positive}}<br/>
-            {% if contact.staff != None %}
-                &nbsp;&nbsp;Staff assigned: {{contact.staff}}<br/>
-            {% else %}
-                &nbsp;&nbsp;No staff is assigned.<br/>
-            {% endif %}
-        </p>
-    </li>
-{% endfor %}
+{% if not close_contacts %}
+    <br/>No close contact for this positive case.<br/>
+{% else %}
+    {% for contact in close_contacts %}
+        <li>
+            <p>
+                Close contact ID: {{contact.id}}<br/>
+                NRIC: {{contact.identity.nric}}<br/>
+                Positive case related:<br/>
+                &nbsp;&nbsp;ID: {{contact.positivecase.id}}<br/>
+                &nbsp;&nbsp;NRIC: {{contact.positivecase.identity.nric}}<br/>
+                &nbsp;&nbsp;Date test positive: {{contact.positivecase.date_test_positive}}<br/>
+                {% if contact.staff != None %}
+                    &nbsp;&nbsp;Staff assigned: {{contact.staff}}<br/>
+                {% else %}
+                    &nbsp;&nbsp;No staff is assigned.<br/>
+                {% endif %}
+            <br/></p>
+        </li>
+    {% endfor %}
+{% endif %}
 </ol>
 </body>
+{% endautoescape %}
 </html>
+{% endblock %}
