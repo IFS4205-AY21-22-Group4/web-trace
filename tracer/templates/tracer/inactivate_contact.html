@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Token Inactivating Page</title>
+    <title>Contact Inactivating Page</title>
     <script language="javascript">
         <!--
         function test(form) { 
@@ -28,7 +28,7 @@
             }
             return true;
         }
-
+        
         function test_checknric(form){
             if (form.check_nric.value == ""){
                 alert("Please enter the NRIC number again!");
@@ -46,10 +46,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
     integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
     <style>
         body {
             background-color: #ebeff5;
         }
+
 
         #total-orders {
             background-color: #4cb4c7;
@@ -63,13 +65,12 @@
         #orders-pending {
             background-color: #7CD1C0;
         }
-
     </style>
 </head>
 <body> 
-    {% include 'issuer/navbar.html' %}
+    {% include 'tracer/navbar.html' %}
     <div align="center" style="font-size:30px">
-        You are on the token inactivating page.    
+        You are on the close contact inactivating page.    
     </div>
     <form  method="post" > {% csrf_token %} {% autoescape on %}
         <div align="center">
@@ -82,10 +83,10 @@
         <div style="text-align:center">
         <input type="submit" name="submit" value="submit", onclick="return test(form)" >
         <input type="reset" name="reset" value="reset" >
-        <button type="button" name="gohome" onclick="window.location.href = '/issuer'">Go Home</button> {% endautoescape %}
+        <button type="button" name="gohome" onclick="window.location.href = '/tracer'">Go Home</button> {% endautoescape %}
         <div>
             {% if message %}
-            <script> alert("Token is inactivated successfully!"); </script>
+            <script> alert("Close contact is inactivated successfully!"); </script>
             {% endif %}
     </form>
 </body>

@@ -4,26 +4,28 @@ Main web application for contact tracers, officials, token issuers, administrato
 
 ## Usage
 
-To test that the source code runs on a fresh Docker container, run:
+Ensure that ifs4205-database container is up and running first.
+
+Start the container using `docker-compose`:
 
 ```bash
 docker-compose up --build -d
 ```
 
-Apply migrations:
+To interact directly with the container using a terminal:
 
 ```bash
-docker-compose run web python manage.py migrate # or run other commands as needed this way
-docker-compose logs # Confirm that server runs without errors
+docker-compose exec web /bin/bash
 ```
 
-When done:
+To stop the container:
+
+```bash
+docker-compose stop
+```
+
+To tear down the container:
 
 ```bash
 docker-compose down
 ```
-
-To delete database volume:
-
-```bash
-docker volume rm ifs4205-web-trace_mariadb_data

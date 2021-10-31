@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import views
 
+app_name = "issuer"
 urlpatterns = [
     path("", views.index, name="index"),
     path("issue_token/", views.issue_token, name="issue_token"),

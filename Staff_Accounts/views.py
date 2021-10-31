@@ -184,9 +184,9 @@ def home(request):
     elif group == "Officials":
         return HttpResponseRedirect(reverse("official:index"))
     elif group == "Contact Tracers":
-        return render(request, "accounts/tracer.html")
+        return render(request, "tracer/tracer.html")
     elif group == "Token Issuers":
-        return render(request, "accounts/issuer.html")
+        return render(request, "issuer/index.html")
     else:
         logout(request)
         return redirect("login")
