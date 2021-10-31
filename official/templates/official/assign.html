@@ -6,16 +6,16 @@
     <meta charset="UTF-8">
     <title>Assign a case cluster to a staff</title>
 </head>
+{% autoescape on %}
 <body>
 <br/>
 <form action="{% url 'official:assign' %}" method="post">
-{% autoescape on %}
 {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value="Submit">
-{% endautoescape %}
 </form>
 <div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 </body>
+{% endautoescape %}
 </html>
 {% endblock %}

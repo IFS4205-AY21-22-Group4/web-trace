@@ -4,15 +4,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Insert a positive case</title>
+    <title>Title</title>
 </head>
 {% autoescape on %}
 <body>
-<h1>Enter the details of the positive case to be inserted:</h1>
-<p>This positive case will have positive case ID: {{case_num}}</p>
-<form action="{% url 'official:insert' %}" method="post">
+<h1>Enter the name of the cluster to be added:</h1>
+<p>This cluster case will have cluster ID: {{cluster_num}}</p>
+<form action="{% url 'official:add' %}" method="post">
 {% csrf_token %}
-<!--{{form.as_p}}-->
 {% for field in form %}
 <div class="fieldWrapper"><p>
     {{ field.errors }}
@@ -24,9 +23,6 @@
 {% endfor %}
 <input type="submit" value="Submit">
 </form>
-<div>
-    <br/>By clicking the "submit" button, all the close contacts related to the positive case will be added to the database.<br/>
-</div>
 <div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 </body>
 {% endautoescape %}

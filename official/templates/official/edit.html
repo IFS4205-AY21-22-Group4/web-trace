@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>Update a positive case</title>
 </head>
+{% autoescape on %}
 <body>
 <h1>Change the details of the positive case:</h1>
 <p>NRIC: {{case.identity.nric}}</p>
@@ -29,5 +30,6 @@
 </form>
 <div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 </body>
+{% endautoescape %}
 </html>
 {% endblock %}

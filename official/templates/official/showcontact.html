@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>New close contacts are added to the database</title>
 </head>
+{% autoescape on %}
 <body>
 <h3>These close contacts have been added to the database:</h3>
 {% if positivecase.cluster != None %}
@@ -18,13 +19,15 @@
 <div><br/><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/></div>
 <div><br/><a href="{% url 'official:update' %}">Click here to update an existing positive case</a><br/></div>
 <div><br/><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/></div>
+<div><br/><a href="{% url 'official:add' %}">Click here to add a new case cluster</a><br/></div>
+<br/>
 <ol>
 {% if not close_contacts %}
     <br/>No close contact for this positive case.<br/>
 {% else %}
     {% for contact in close_contacts %}
         <li>
-            <p><br/>
+            <p>
                 Close contact ID: {{contact.id}}<br/>
                 NRIC: {{contact.identity.nric}}<br/>
                 Positive case related:<br/>
@@ -42,5 +45,6 @@
 {% endif %}
 </ol>
 </body>
+{% endautoescape %}
 </html>
 {% endblock %}

@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>Confirm positive case</title>
 </head>
+{% autoescape on %}
 <body>
 <h1>Confirm the following information of the positive case:</h1>
 <p>ID of the positive case: {{case.id}}</p>
@@ -20,7 +21,7 @@
     <p>The case has not recovered. {{form.is_recovered_change}} {{form.is_recovered_change.label}}</p>
 {% endif %}
 {% if case.staff %}
-    <p>Staff assigned: {{case.staff.id}} {{case.staff.username}} {{form.staff_change}} {{form.staff_change.label}}</p>
+    <p>Staff assigned: {{case.staff}} {{form.staff_change}} {{form.staff_change.label}}</p>
 {% else %}
     <p>No staff is assigned to this positive case. {{form.staff_change}} {{form.staff_change.label}}</p>
 {% endif %}
@@ -34,5 +35,6 @@
 <p><br/><a href="{% url 'official:update' %}">Click here to go back to choose another positive case</a></p>
 <div><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 </body>
+{% endautoescape %}
 </html>
 {% endblock %}
