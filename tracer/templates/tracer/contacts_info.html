@@ -44,11 +44,6 @@
         <li><p>Close contact {{contact.id}}</p></li>
         <p>Nric number: {{value.nric}}</p>
         <a href="{% url 'tracer:individual_detail' value.nric %}"> Find individual detail information</a></p>
-
-        <!--p>Fullname: {{value.name}}</p>
-        <p>Nric number: {{value.nric}}</p>
-        <p>Phone number: {{value.phone_num}}</p>
-        <p>Address: {{value.address}}</p-->
     {% endfor %}
     </ul>
 {% else %}

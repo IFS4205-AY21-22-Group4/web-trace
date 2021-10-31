@@ -24,6 +24,12 @@ def index(request):
 @verified_user
 @tracer_only
 def close_contact(request):
+    template = loader.get_template("tracer/close_contact.html")
+    case_list = []
+    close_contacts = PositiveCases.objects.filter(staff_id=request.user.id)
+    for instance in close_contacts:
+        case_list.append(instance.id)
+
     if request.method == "POST":
         positive_id = request.POST.get("pos_id", None)
         close_contact_instances = CloseContact.objects.filter(
@@ -58,7 +64,8 @@ def close_contact(request):
         }
 
         return HttpResponse(template.render(context, request))
-    return render(request, "tracer/close_contact.html")
+
+    return HttpResponse(template.render({"case_list": case_list}, request))
 
 
 @verified_user

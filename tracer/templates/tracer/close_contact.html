@@ -36,10 +36,13 @@
 
     <form method="post" > {% csrf_token %} {% autoescape on %}
         <div align="center">
-            <label for="positive">Positive case id:</label>
-            <input type="number" id="positive" name="pos_id" size="12" max="100000000000" id="pos_id" oninput="value=value.replace(/[^\d]/g,'')" required>
+        <label>Positive case id:<select name="pos_id">
+            {% for name in case_list %}
+            <option id="name" value="{{name}}" >{{name}}</option>
+            {% endfor %}
+        </select></label>
         </div>
-        
+
         <div align="center">
         <input type="submit" name="submit" value="submit"> 
         <input type="reset" name="reset" value="reset" >
