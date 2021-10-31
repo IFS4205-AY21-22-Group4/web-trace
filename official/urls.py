@@ -15,4 +15,5 @@ urlpatterns = [
     path("error/<message>/", views.error, name="error"),
     path("showcontact/<int:positivecase_id>", views.showcontact, name="showcontact"),
     path("assign/", views.assign, name="assign"),
+    path("add/", views.add, name="add"),
 ]
