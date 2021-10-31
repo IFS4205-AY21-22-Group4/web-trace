@@ -1,14 +1,20 @@
 <!DOCTYPE html>
+{% extends 'accounts/main.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Error</title>
 </head>
+{% autoescape on %}
 <body>
 Invalid action:<br/>
 {{message}}
 <div><a href="{% url 'official:index' %}">Click here to go back to official homepage</a></div>
 <div><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a></div>
 <div><a href="{% url 'official:update' %}">Click here to update an existing positive case</a></div>
+<div><a href="{% url 'official:add' %}">Click here to add a new case cluster</a></div>
 </body>
+{% endautoescape %}
 </html>
+{% endblock %}

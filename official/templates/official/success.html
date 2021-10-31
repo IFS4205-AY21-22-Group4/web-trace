@@ -1,14 +1,20 @@
 <!DOCTYPE html>
+{% extends 'accounts/main.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Successful action</title>
 </head>
+{% autoescape on %}
 <body>
 <p>The change has been saved to the database successfully.</p>
 <div><br/><a href="{% url 'official:index' %}">Click here to go back to the official homepage</a><br/></div>
 <div><br/><a href="{% url 'official:insert' %}">Click here to insert a new positive case</a><br/></div>
 <div><br/><a href="{% url 'official:update' %}">Click here to update an existing positive case</a><br/></div>
 <div><br/><a href="{% url 'official:assign' %}">Click here to assign a case cluster to a staff</a><br/></div>
+<div><br/><a href="{% url 'official:add' %}">Click here to add a new case cluster</a><br/></div>
 </body>
+{% endautoescape %}
 </html>
+{% endblock %}

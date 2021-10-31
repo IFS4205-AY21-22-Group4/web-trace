@@ -20,7 +20,7 @@ class InsertForm(forms.Form):
         required=False,
     )
     cluster = forms.ModelChoiceField(
-        label="Cluster", queryset=Cluster.objects.filter(status=True), required=False
+        label="Cluster", queryset=Cluster.objects.filter(status=True), required=True
     )
 
 
@@ -30,7 +30,7 @@ class UpdateForm(forms.Form):
 
 class EditForm(forms.Form):
     date_test_positive = forms.DateField(
-        widget=forms.widgets.DateInput(attrs={"type": "date"})
+        widget=forms.widgets.DateInput(attrs={"type": "date"}), required=False
     )
     is_recovered = forms.BooleanField(
         label="The positive case has recovered", required=False
@@ -61,3 +61,7 @@ class AssignForm(forms.Form):
         queryset=Staff.objects.filter(user__groups__name="Contact Tracers"),
         required=True,
     )
+
+
+class AddForm(forms.Form):
+    name = forms.CharField(max_length=10)
