@@ -87,7 +87,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "pandemic_project",
-        "USER": "root",
+        "USER": "mariadb",
         "PASSWORD": "mariadb",
         "DEFAULT_CHARSET": "utf-8",
         "HOST": "127.0.0.1",
@@ -142,8 +142,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "Staff_Accounts.User"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "ifs4205group4ay21@gmail.com"  # hide this afterwards
-EMAIL_HOST_PASSWORD = "fupywhzsdgeewhjj"  # hide this afterwards
+EMAIL_HOST_USER = "guoai526@gmail.com"  # hide this afterwards
+EMAIL_HOST_PASSWORD = "20000526jin"  # hide this afterwards
 
 EMAIL_USE_TLS = True
 

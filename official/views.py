@@ -433,6 +433,10 @@ def edit(request, positivecase_id):
                 if change_dict["staff_change"]:
                     staff = form.cleaned_data["staff"]
                     case.staff = staff
+                    close_contacts = case.closecontact_set.all()
+                    for contact in close_contacts:
+                        contact.staff = staff
+                        contact.save()
                 if change_dict["cluster_change"]:
                     cluster = form.cleaned_data["cluster"]
                     if not cluster:
