@@ -78,11 +78,11 @@ Highcharts.chart('container', {
             Positive case id: {{case.id}}<br/>
             NRIC: {{case.identity.nric}}<br/>
             Date tested positive: {{case.date_test_positive}}<br/>
-            ID of assigned staff:
-            {% if case.staff.id == None %}
+            Assigned staff:
+            {% if case.staff == None %}
                 No staff assigned
             {% else %}
-                {{case.staff.id}}
+                {{case.staff}}
             {% endif %}
             <br/>
         </p>
@@ -97,11 +97,11 @@ Highcharts.chart('container', {
             Close contact id: {{contact.id}}<br/>
             NRIC: {{contact.identity.nric}}<br/>
             ID of positive case related: {{contact.positivecase.id}}<br/>
-            ID of assigned staff:
-            {% if contact.staff.id == None %}
+            Assigned staff:
+            {% if contact.staff == None %}
                 No staff assigned
             {% else %}
-                {{contact.staff.id}}
+                {{contact.staff}}
             {% endif %}
             <br/>
         </p>
